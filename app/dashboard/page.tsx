@@ -1,8 +1,7 @@
 export default function Dashboard() {
   return (
     <div className="h-full w-full">
-      <h1>Analytics</h1>
-      <h1>Settings/Customization</h1>
+      {/* When the user doesn't have a profile created, show a prompt to create one with a specific username */}
     </div>
   )
 }

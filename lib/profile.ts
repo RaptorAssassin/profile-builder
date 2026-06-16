@@ -45,13 +45,13 @@ export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
 const supabase = createClient()
 
 export const getProfileConfig = async (
-  username: string
+  userId: string
 ): Promise<ProfileConfig> => {
   // Query Profile Config Data from db
   const { data, error } = (await supabase
     .from("profiles")
     .select("config")
-    .eq("username", username)
+    .eq("id", userId)
     .single()) as {
     data: { config: Partial<ProfileConfig> } | null
     error: Error | null
@@ -63,13 +63,13 @@ export const getProfileConfig = async (
 }
 
 export const getProfileContent = async (
-  username: string
+  userId: string
 ): Promise<ProfileContent> => {
   // Query Profile Content Data from db
   const { data, error } = (await supabase
     .from("profiles")
     .select("content")
-    .eq("username", username)
+    .eq("id", userId)
     .single()) as {
     data: { content: Partial<ProfileContent> } | null
     error: Error | null
@@ -78,4 +78,19 @@ export const getProfileContent = async (
   if (error) throw error
 
   return { ...DEFAULT_PROFILE_CONTENT, ...data?.content } as ProfileContent
+}
+
+export const hasProfile = async (userId: string): Promise<boolean> => {
+  const { data, error } = (await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle()) as {
+    data: { id: string } | null
+    error: Error | null
+  }
+
+  if (error) throw error
+
+  return data !== null
 }
