@@ -1,5 +1,5 @@
 import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { createClient } from "./supabase/client"
+import { createClient } from "@supabase/supabase-js"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {

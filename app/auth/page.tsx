@@ -1,35 +1,17 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/server"
 import { useState } from "react"
 import { redirect } from "next/navigation"
+import { login, signUp } from "@/lib/auth"
 
 export default function AuthPage() {
-  const login = async () => {
-    const formData = new FormData()
-    formData.append("email", email)
-    formData.append("password", password)
-
-    const supabase = await createClient()
-
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+  const callLogin = async () => {
+    await login(email, password)
     redirect("/dashboard")
   }
-
-  const signUp = async () => {
-    const formData = new FormData()
-    formData.append("email", email)
-    formData.append("password", password)
-
-    const supabase = await createClient()
-
-    await supabase.auth.signUp({
-      email,
-      password,
-    })
+  const callSignUp = async () => {
+    await signUp(email, password)
     redirect("/dashboard")
   }
 
@@ -59,10 +41,10 @@ export default function AuthPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="flex gap-2">
-          <Button onClick={login} className="">
+          <Button onClick={callLogin} className="">
             Log In
           </Button>
-          <Button onClick={signUp} variant={"ghost"} className="">
+          <Button onClick={callSignUp} variant={"ghost"} className="">
             Sign Up
           </Button>
         </div>
