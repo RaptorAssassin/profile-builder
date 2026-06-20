@@ -1,5 +1,5 @@
 import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@/lib/supabase/server"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {
@@ -42,12 +42,13 @@ export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
   ],
 }
 
-const supabase = createClient()
+
 
 export const getProfileConfig = async (
   userId: string
 ): Promise<ProfileConfig> => {
   // Query Profile Config Data from db
+  const supabase = await createClient()
   const { data, error } = (await supabase
     .from("profiles")
     .select("config")
@@ -66,6 +67,7 @@ export const getProfileContent = async (
   userId: string
 ): Promise<ProfileContent> => {
   // Query Profile Content Data from db
+  const supabase = await createClient()
   const { data, error } = (await supabase
     .from("profiles")
     .select("content")
@@ -80,17 +82,39 @@ export const getProfileContent = async (
   return { ...DEFAULT_PROFILE_CONTENT, ...data?.content } as ProfileContent
 }
 
+export const getUsername = async (): Promise<string> => {
+    const supabase = await createClient()
+
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+const userId = user?.id
+
+    const { data, error } = (await supabase
+      .from("profiles")
+      .select("username")
+      .eq("id", userId)
+      .maybeSingle()) as {
+      data: { username: string } | null
+      error: Error | null
+    }
+    if (error) throw error
+    return data?.username || ""
+}
+
 export const hasProfile = async (userId: string): Promise<boolean> => {
-  const { data, error } = (await supabase
+    const supabase = await createClient()
+  const { data, error } = await supabase
     .from("profiles")
     .select("id")
     .eq("id", userId)
-    .maybeSingle()) as {
-    data: { id: string } | null
-    error: Error | null
-  }
+    .maybeSingle()
 
-  if (error) throw error
+  if (error) {
+  console.log("user doesn't have a profile yet, displaying profile creation prompt")
+  return false
+}
 
   return data !== null
 }
