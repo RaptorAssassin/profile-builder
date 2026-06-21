@@ -1,3 +1,9 @@
+export const BACKGROUNDS: { name: string; type: BackgroundType }[] = [
+  { name: "Color", type: "color" },
+  { name: "Gradient", type: "gradient" },
+  { name: "Image", type: "image" },
+  { name: "Video", type: "video" },
+]
 export type BackgroundType = "color" | "gradient" | "image" | "video"
 
 export type BackgroundEffect = "none" | "rain" | "snow" | "particles"

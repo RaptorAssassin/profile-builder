@@ -42,8 +42,6 @@ export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
   ],
 }
 
-
-
 export const getProfileConfig = async (
   userId: string
 ): Promise<ProfileConfig> => {
@@ -83,28 +81,28 @@ export const getProfileContent = async (
 }
 
 export const getUsername = async (): Promise<string> => {
-    const supabase = await createClient()
+  const supabase = await createClient()
 
-const {
-  data: { user },
-} = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-const userId = user?.id
+  const userId = user?.id
 
-    const { data, error } = (await supabase
-      .from("profiles")
-      .select("username")
-      .eq("id", userId)
-      .maybeSingle()) as {
-      data: { username: string } | null
-      error: Error | null
-    }
-    if (error) throw error
-    return data?.username || ""
+  const { data, error } = (await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", userId)
+    .maybeSingle()) as {
+    data: { username: string } | null
+    error: Error | null
+  }
+  if (error) throw error
+  return data?.username || ""
 }
 
 export const hasProfile = async (userId: string): Promise<boolean> => {
-    const supabase = await createClient()
+  const supabase = await createClient()
   const { data, error } = await supabase
     .from("profiles")
     .select("id")
@@ -112,9 +110,28 @@ export const hasProfile = async (userId: string): Promise<boolean> => {
     .maybeSingle()
 
   if (error) {
-  console.log("user doesn't have a profile yet, displaying profile creation prompt")
-  return false
-}
+    console.log(
+      "user doesn't have a profile yet, displaying profile creation prompt"
+    )
+    return false
+  }
 
   return data !== null
+}
+
+export const createProfile = async (): Promise<void> => {
+  const supabase = await createClient()
+  const userId = supabase.auth
+    .getUser()
+    .then(({ data: { user } }) => user?.id)
+    .catch(() => null)
+  const { data, error } = await supabase.from("profiles").insert([
+    {
+      id: userId,
+      username: `user${Math.floor(Math.random() * 1000)}`,
+      config: DEFAULT_PROFILE_CONFIG,
+      content: DEFAULT_PROFILE_CONTENT,
+    },
+  ])
+  if (error) throw error
 }
