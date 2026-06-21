@@ -1,5 +1,5 @@
 import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@/lib/supabase/server"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {
@@ -48,14 +48,12 @@ export const getProfileConfig = async (
   userId: string
 ): Promise<ProfileConfig> => {
   // Query Profile Config Data from db
-  const { data, error } = (await supabase
+  const supabase = await createClient()
+  const { data, error } = await supabase
     .from("profiles")
     .select("config")
     .eq("id", userId)
-    .single()) as {
-    data: { config: Partial<ProfileConfig> } | null
-    error: Error | null
-  }
+    .single()
 
   if (error) throw error
 
@@ -66,14 +64,12 @@ export const getProfileContent = async (
   userId: string
 ): Promise<ProfileContent> => {
   // Query Profile Content Data from db
-  const { data, error } = (await supabase
+  const supabase = await createClient()
+  const { data, error } = await supabase
     .from("profiles")
     .select("content")
     .eq("id", userId)
-    .single()) as {
-    data: { content: Partial<ProfileContent> } | null
-    error: Error | null
-  }
+    .single()
 
   if (error) throw error
 
@@ -81,14 +77,13 @@ export const getProfileContent = async (
 }
 
 export const hasProfile = async (userId: string): Promise<boolean> => {
-  const { data, error } = (await supabase
+  // Check if profile exists for user
+  const supabase = await createClient()
+  const { data, error } = await supabase
     .from("profiles")
     .select("id")
     .eq("id", userId)
-    .maybeSingle()) as {
-    data: { id: string } | null
-    error: Error | null
-  }
+    .maybeSingle()
 
   if (error) throw error
 
