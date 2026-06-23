@@ -51,7 +51,7 @@ export type ProfileLink = {
 }
 
 export type ProfileContent = {
-  name: string
+  name?: string
   bio?: string
   location?: string
   links?: ProfileLink[]

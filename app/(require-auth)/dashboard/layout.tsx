@@ -38,14 +38,14 @@ export default function DashboardLayout({
       icon: SquarePenIcon,
       subItems: [
         { title: "Profile", href: "/dashboard/customize" },
-        { title: "Links", href: "/dashboard/customize/links" },
+        //{ title: "Links", href: "/dashboard/customize/links" },
       ],
     },
-    {
-      title: "Settings",
-      icon: SettingsIcon,
-      href: "/dashboard/settings",
-    },
+    // {
+    //   title: "Settings",
+    //   icon: SettingsIcon,
+    //   href: "/dashboard/settings",
+    // },
   ]
 
   return (

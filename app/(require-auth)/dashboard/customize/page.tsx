@@ -21,6 +21,7 @@ import {
   getProfileContent,
   updateUsername,
   isUsernameTaken,
+  hasCurrentUserUsername,
 } from "@/lib/profile"
 import {
   BACKGROUNDS,
@@ -33,6 +34,16 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+} from "@/components/ui/input-group"
+import { CheckIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 
 export default function CustomizationPage({
   params,
@@ -48,6 +59,8 @@ export default function CustomizationPage({
   const [username, setUsername] = useState<string>("")
 
   const router = useRouter()
+
+  const domain = "profile-builder.vercel.app"
 
   const usernameInput = useRef<HTMLInputElement>(null)
 
@@ -91,8 +104,14 @@ export default function CustomizationPage({
 
   // Save config and content to database with debounce to prevent excessive writes
   const debounceTimeout = 500 // ms
+  const didInit = useRef(false)
   useEffect(() => {
     if (isLoading) return
+    if (!didInit.current) {
+      didInit.current = true
+      return
+    }
+
     const timeout = setTimeout(async () => {
       setIsSaving(true)
       const supabase = await createClient()
@@ -111,17 +130,34 @@ export default function CustomizationPage({
         console.error("Error saving profile data:", error)
       } finally {
         setIsSaving(false)
+        toast.success("Changes saved successfully")
       }
     }, debounceTimeout)
     return () => clearTimeout(timeout)
-  }, [config, content])
+  }, [config, content, isLoading])
 
   type changeUsernameResponse = "success" | "username_taken" | "error"
 
   const changeUsername = async (newUsername: string) => {
     // Check if username is taken
+    const supabase = await createClient()
+    const userId = await supabase.auth
+      .getUser()
+      .then(({ data: { user } }) => user?.id)
+      .catch(() => null)
+    if (!userId) {
+      router.push("/auth")
+      return
+    }
     const usernameTaken = await isUsernameTaken(newUsername)
-    if (usernameTaken) {
+    const userHasUsername = await hasCurrentUserUsername(userId, newUsername)
+
+    if (userHasUsername) {
+      toast.success("Username updated successfully")
+      return
+    }
+
+    if (usernameTaken && !userHasUsername) {
       toast.error("Username is already taken")
       return
     }
@@ -147,23 +183,115 @@ export default function CustomizationPage({
   return (
     <div className="flex h-full w-full flex-col gap-4">
       {/* Content */}
-      <h1 className="font-bold text-2xl">Content</h1>
-      <DashboardSection>
+      <h1 className="text-2xl font-bold">Content</h1>
+      <DashboardSection className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Username */}
-        <div className="flex gap-2">
-          <Input
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            ref={usernameInput}
-          />
-          <Button onClick={() => changeUsername(username)}>
-            Update Username
-          </Button>
+        <div className="">
+          <Field>
+            <FieldLabel>Username</FieldLabel>
+
+            <div className="flex items-center gap-2">
+              <InputGroup className="flex-1">
+                <InputGroupAddon align="inline-start">
+                  <UserIcon />
+                </InputGroupAddon>
+
+                <InputGroupAddon>
+                  <InputGroupText>{domain}/</InputGroupText>
+                </InputGroupAddon>
+
+                <InputGroupInput
+                  className="pl-0.5!"
+                  placeholder="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  ref={usernameInput}
+                />
+              </InputGroup>
+
+              <Button
+                onClick={() => changeUsername(username)}
+                variant="outline"
+                className="shrink-0"
+              >
+                <CheckIcon />
+              </Button>
+            </div>
+            <FieldDescription>Select a unique username.</FieldDescription>
+          </Field>
+        </div>
+        {/* Display Name */}
+        <div className="">
+          <Field>
+            <FieldLabel>Display Name</FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                placeholder="Display name"
+                value={content.name}
+                onChange={(e) =>
+                  setContent((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
+              />
+            </InputGroup>
+            <FieldDescription>
+              This will be displayed as your name on your profile.
+            </FieldDescription>
+          </Field>
+        </div>
+        {/* Bio */}
+        <div className="max-w-lg">
+          <Field>
+            <FieldLabel>Bio</FieldLabel>
+            <InputGroup>
+              <Textarea
+                value={content.bio}
+                onChange={(e) =>
+                  setContent((prev) => ({ ...prev, bio: e.target.value }))
+                }
+                placeholder="Bio"
+                className="min-w-sm"
+              />
+            </InputGroup>
+          </Field>
+
+          {/* <InputGroup>
+            <InputGroupInput
+              placeholder="Bio"
+              value={content.bio}
+              onChange={(e) =>
+                setContent((prev) => ({ ...prev, bio: e.target.value }))
+              }
+            />
+
+            <InputGroupAddon align={"inline-start"}>
+              <TextIcon />
+            </InputGroupAddon>
+          </InputGroup> */}
+        </div>
+        {/* Location */}
+        <div className="max-w-sm">
+          <Field>
+            <FieldLabel>Location</FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                placeholder="Location"
+                value={content.location ?? ""}
+                onChange={(e) =>
+                  setContent((prev) => ({ ...prev, location: e.target.value }))
+                }
+              />
+              <InputGroupAddon align={"inline-start"}>
+                <MapPinIcon />
+              </InputGroupAddon>
+            </InputGroup>
+          </Field>
         </div>
       </DashboardSection>
       {/* Visuals */}
-      <h1 className="font-bold text-2xl">Visuals</h1>
+      <h1 className="text-2xl font-bold">Visuals</h1>
       <DashboardSection>
         <div className="flex flex-row gap-4">
           {/* Background */}

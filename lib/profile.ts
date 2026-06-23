@@ -30,7 +30,7 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
 }
 
 export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
-  name: "User",
+  name: "",
   bio: "",
 }
 
@@ -120,6 +120,24 @@ export const isUsernameTaken = async (username: string): Promise<boolean> => {
   const { data, error } = await supabase
     .from("profiles")
     .select("id")
+    .eq("username", username)
+    .maybeSingle()
+
+  if (error) throw error
+
+  return data !== null
+}
+
+export const hasCurrentUserUsername = async (
+  userId: string,
+  username: string
+): Promise<boolean> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
     .eq("username", username)
     .maybeSingle()
 
