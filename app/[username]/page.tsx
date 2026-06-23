@@ -16,7 +16,7 @@ export default async function UserPage({ params }: UserPageProps) {
     return (
       <div className="flex h-dvh w-full flex-col items-center justify-center gap-4 text-xl">
         This Profile doesn't exist.
-        <ClaimUsernameButtons />
+        <ClaimUsernameButtons username={username} />
       </div>
     )
   }

@@ -1,5 +1,5 @@
 import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/client"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {
@@ -30,102 +30,136 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
 }
 
 export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
-  name: "Example User",
-  bio: "This is a sample bio.",
-  location: "Example Location",
-  links: [
-    {
-      name: "GitHub",
-      url: "https://github.com/example",
-      customIconUrl: "https://github.com/favicon.ico",
-    },
-  ],
+  name: "User",
+  bio: "",
 }
 
 export const getProfileConfig = async (
-  userId: string
+  username: string
 ): Promise<ProfileConfig> => {
-  // Query Profile Config Data from db
   const supabase = await createClient()
-  const { data, error } = (await supabase
+
+  const { data, error } = await supabase
     .from("profiles")
     .select("config")
-    .eq("id", userId)
-    .single()) as {
-    data: { config: Partial<ProfileConfig> } | null
-    error: Error | null
-  }
+    .eq("username", username)
+    .single()
 
   if (error) throw error
 
-  return { ...DEFAULT_PROFILE_CONFIG, ...data?.config } as ProfileConfig
+  return {
+    ...DEFAULT_PROFILE_CONFIG,
+    ...(data?.config ?? {}),
+  } as ProfileConfig
 }
 
 export const getProfileContent = async (
-  userId: string
+  username: string
 ): Promise<ProfileContent> => {
-  // Query Profile Content Data from db
   const supabase = await createClient()
-  const { data, error } = (await supabase
+
+  const { data, error } = await supabase
     .from("profiles")
     .select("content")
-    .eq("id", userId)
-    .single()) as {
-    data: { content: Partial<ProfileContent> } | null
-    error: Error | null
-  }
+    .eq("username", username)
+    .single()
 
   if (error) throw error
 
-  return { ...DEFAULT_PROFILE_CONTENT, ...data?.content } as ProfileContent
+  return {
+    ...DEFAULT_PROFILE_CONTENT,
+    ...(data?.content ?? {}),
+  } as ProfileContent
 }
 
-export const getUsername = async (): Promise<string> => {
+export const updateProfileConfig = async (
+  userId: string,
+  config: ProfileConfig
+): Promise<void> => {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { error } = await supabase
+    .from("profiles")
+    .update({ config })
+    .eq("id", userId)
 
-  const userId = user?.id
+  if (error) throw error
+}
 
-  const { data, error } = (await supabase
+export const updateProfileContent = async (
+  userId: string,
+  content: ProfileContent
+): Promise<void> => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ content })
+    .eq("id", userId)
+
+  if (error) throw error
+}
+
+export const getUsername = async (userId: string): Promise<string> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
     .from("profiles")
     .select("username")
     .eq("id", userId)
-    .maybeSingle()) as {
-    data: { username: string } | null
-    error: Error | null
-  }
+    .maybeSingle()
+
   if (error) throw error
+
   return data?.username || ""
+}
+
+export const isUsernameTaken = async (username: string): Promise<boolean> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("username", username)
+    .maybeSingle()
+
+  if (error) throw error
+
+  return data !== null
+}
+
+export const updateUsername = async (
+  userId: string,
+  newUsername: string
+): Promise<void> => {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ username: newUsername })
+    .eq("id", userId)
+
+  if (error) throw error
 }
 
 export const hasProfile = async (userId: string): Promise<boolean> => {
   const supabase = await createClient()
+
   const { data, error } = await supabase
     .from("profiles")
     .select("id")
     .eq("id", userId)
     .maybeSingle()
 
-  if (error) {
-    console.log(
-      "user doesn't have a profile yet, displaying profile creation prompt"
-    )
-    return false
-  }
+  if (error) throw error
 
   return data !== null
 }
 
-export const createProfile = async (): Promise<void> => {
+export const createProfile = async (userId: string): Promise<void> => {
   const supabase = await createClient()
-  const userId = supabase.auth
-    .getUser()
-    .then(({ data: { user } }) => user?.id)
-    .catch(() => null)
-  const { data, error } = await supabase.from("profiles").insert([
+
+  const { error } = await supabase.from("profiles").insert([
     {
       id: userId,
       username: `user${Math.floor(Math.random() * 1000)}`,
@@ -133,5 +167,6 @@ export const createProfile = async (): Promise<void> => {
       content: DEFAULT_PROFILE_CONTENT,
     },
   ])
+
   if (error) throw error
 }
