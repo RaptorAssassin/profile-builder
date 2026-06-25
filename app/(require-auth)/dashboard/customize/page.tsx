@@ -23,12 +23,7 @@ import {
   isUsernameTaken,
   hasCurrentUserUsername,
 } from "@/lib/profile"
-import {
-  BACKGROUNDS,
-  ProfileConfig,
-  BackgroundType,
-  ProfileContent,
-} from "@/types/profile"
+import { ProfileConfig, BackgroundType, ProfileContent, BackgroundEffect } from "@/types/profile"
 import { createClient } from "@/lib/supabase/client"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -44,16 +39,11 @@ import {
 import { CheckIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
+import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
 
-export default function CustomizationPage({
-  params,
-}: {
-  params: { claimUsername?: string }
-}) {
+export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
-  const [content, setContent] = useState<ProfileContent>(
-    DEFAULT_PROFILE_CONTENT
-  )
+  const [content, setContent] = useState<ProfileContent>(DEFAULT_PROFILE_CONTENT)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isSaving, setIsSaving] = useState<boolean>(false)
   const [username, setUsername] = useState<string>("")
@@ -248,28 +238,12 @@ export default function CustomizationPage({
             <InputGroup>
               <Textarea
                 value={content.bio}
-                onChange={(e) =>
-                  setContent((prev) => ({ ...prev, bio: e.target.value }))
-                }
+                onChange={(e) => setContent((prev) => ({ ...prev, bio: e.target.value }))}
                 placeholder="Bio"
                 className="min-w-sm"
               />
             </InputGroup>
           </Field>
-
-          {/* <InputGroup>
-            <InputGroupInput
-              placeholder="Bio"
-              value={content.bio}
-              onChange={(e) =>
-                setContent((prev) => ({ ...prev, bio: e.target.value }))
-              }
-            />
-
-            <InputGroupAddon align={"inline-start"}>
-              <TextIcon />
-            </InputGroupAddon>
-          </InputGroup> */}
         </div>
         {/* Location */}
         <div className="max-w-sm">
@@ -279,9 +253,7 @@ export default function CustomizationPage({
               <InputGroupInput
                 placeholder="Location"
                 value={content.location ?? ""}
-                onChange={(e) =>
-                  setContent((prev) => ({ ...prev, location: e.target.value }))
-                }
+                onChange={(e) => setContent((prev) => ({ ...prev, location: e.target.value }))}
               />
               <InputGroupAddon align={"inline-start"}>
                 <MapPinIcon />
@@ -293,35 +265,73 @@ export default function CustomizationPage({
       {/* Visuals */}
       <h1 className="text-2xl font-bold">Visuals</h1>
       <DashboardSection>
-        <div className="flex flex-row gap-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Background */}
           <div className="">
-            <Combobox
-              items={BACKGROUNDS.map((bg) => bg.type)}
-              defaultValue={BACKGROUNDS[0]["type"]}
-              value={config.background.type}
-              onInputValueChange={(value) =>
-                setConfig((prev) => ({
-                  ...prev,
-                  background: {
-                    ...prev.background,
-                    type: value as BackgroundType,
-                  },
-                }))
-              }
-            >
-              <ComboboxInput placeholder="Select a Background" />
-              <ComboboxContent>
-                <ComboboxEmpty>No background found.</ComboboxEmpty>
-                <ComboboxList>
-                  {BACKGROUNDS.map((background) => (
-                    <ComboboxItem key={background.name} value={background.type}>
-                      {background.name}
-                    </ComboboxItem>
-                  ))}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
+            <Field>
+              <FieldLabel>Background</FieldLabel>
+              <Combobox
+                items={Object.keys(BACKGROUND_COMPONENTS)}
+                defaultValue={Object.keys(BACKGROUND_COMPONENTS)[0]}
+                value={config.background.type}
+                onInputValueChange={(value) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    background: {
+                      ...prev.background,
+                      type: value as BackgroundType,
+                    },
+                  }))
+                }
+              >
+                <ComboboxInput className="capitalize" placeholder="Select a Background" />
+                <ComboboxContent>
+                  <ComboboxEmpty>No background found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
+          </div>
+          {/* Background Effect */}
+          <div className="">
+            <Field>
+              <FieldLabel>Background Effect</FieldLabel>
+              <Combobox
+                items={Object.keys(BACKGROUND_EFFECTS_COMPONENTS)}
+                defaultValue={Object.keys(BACKGROUND_EFFECTS_COMPONENTS)[0]}
+                value={config.background.effect?.type || "none"}
+                onInputValueChange={(value) =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    background: {
+                      ...prev.background,
+                      effect: {
+                        ...prev.background.effect,
+                        type: value as BackgroundEffect,
+                      },
+                    },
+                  }))
+                }
+              >
+                <ComboboxInput className="capitalize" placeholder="Select a Background Effect" />
+                <ComboboxContent>
+                  <ComboboxEmpty>No background effect found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Field>
           </div>
         </div>
       </DashboardSection>

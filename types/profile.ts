@@ -1,33 +1,42 @@
-export const BACKGROUNDS: { name: string; type: BackgroundType }[] = [
-  { name: "Color", type: "color" },
-  { name: "Gradient", type: "gradient" },
-  { name: "Image", type: "image" },
-  { name: "Video", type: "video" },
-]
 export type BackgroundType = "color" | "gradient" | "image" | "video"
 
 export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
 
+export type BackgroundTypeProps = {
+  color: {
+    color: string // Color in hex
+  }
+  gradient: {
+    from: string
+    to: string
+  }
+  image: {
+    imageUrl: string
+  }
+  video: {
+    videoUrl: string
+    speed?: number
+  }
+}
+
+export type BackgroundEffectProps = {
+  none: {}
+  rain: {}
+  snow: {}
+  particles: {
+    interactive?: boolean // default true
+    speed?: number // default 100
+    color?: string // hex color of particles
+  }
+}
+
 export type ProfileConfig = {
   background: {
     type: BackgroundType
-    config: {
-      color?: string // Color in hex
-      gradient?: {
-        from: string
-        to: string
-      }
-      imageUrl?: string
-      videoUrl?: string
-      speed?: number
-    }
+    config: BackgroundTypeProps[BackgroundType]
     effect?: {
       type: BackgroundEffect
-      config?: {
-        color?: string
-        speed?: number // 0-200, default 100
-        interactive?: boolean // Allow hover interactivity
-      }
+      config?: BackgroundEffectProps[BackgroundEffect]
     }
   }
   card: {

@@ -1,12 +1,23 @@
+"use client"
 import ClaimUsernameButtons from "@/components/claim-username-buttons"
-import { getProfileConfig, getProfileContent } from "@/lib/profile"
+import {
+  DEFAULT_PROFILE_CONFIG,
+  DEFAULT_PROFILE_CONTENT,
+  getProfileConfig,
+  getProfileContent,
+} from "@/lib/profile"
+import { ProfileConfig, ProfileContent } from "@/types/profile"
+import { useState } from "react"
 
-type UserPageProps = {
+type ProfileProps = {
   params: Promise<{ username: string }>
 }
 
-export default async function UserPage({ params }: UserPageProps) {
+export default async function Profile({ params }: ProfileProps) {
   const { username } = await params
+  const [content, setContent] = useState<ProfileContent>(DEFAULT_PROFILE_CONTENT)
+  const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
+
   try {
     const config = await getProfileConfig(username)
     const content = await getProfileContent(username)
@@ -21,9 +32,5 @@ export default async function UserPage({ params }: UserPageProps) {
     )
   }
 
-  return (
-    <div className="h-full w-full">
-      <h1>{username}</h1>
-    </div>
-  )
+  return <div className="relative h-full w-full">{/* background */}</div>
 }
