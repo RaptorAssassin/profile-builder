@@ -36,7 +36,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group"
-import { CheckIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-react"
+import { CheckIcon, GlobeIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
@@ -183,7 +183,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
             <div className="flex items-center gap-2">
               <InputGroup className="flex-1">
                 <InputGroupAddon align="inline-start">
-                  <UserIcon />
+                  <GlobeIcon />
                 </InputGroupAddon>
 
                 <InputGroupAddon>
@@ -215,6 +215,9 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           <Field>
             <FieldLabel>Display Name</FieldLabel>
             <InputGroup>
+              <InputGroupAddon align="inline-start">
+                <UserIcon />
+              </InputGroupAddon>
               <InputGroupInput
                 placeholder="Display name"
                 value={content.name}

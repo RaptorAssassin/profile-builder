@@ -1,4 +1,4 @@
-import ParticleBackground from "@/components/Particles"
+import ParticleBackground from "@/components/particles"
 
 type ParticlesProps = {
   interactive?: boolean // default true
