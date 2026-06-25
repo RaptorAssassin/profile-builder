@@ -1,4 +1,4 @@
-"use html"
+"use client"
 import React, { useEffect, useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -146,7 +146,8 @@ export function Rain() {
         <AnimatePresence>
           {splashes.map((splash) => (
             <motion.div
-              key={splash.id}
+              //key={splash.id}
+              key={Math.random() + splash.id}
               initial={{ scale: 0, opacity: 0.6 }}
               animate={{ scale: 1, opacity: 0 }}
               exit={{ opacity: 0 }}
