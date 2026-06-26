@@ -54,6 +54,9 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
 
   const usernameInput = useRef<HTMLInputElement>(null)
 
+  const capitalized = (str: string | undefined) =>
+    str ? str.charAt(0).toUpperCase() + str.slice(1) : ""
+
   // Load user config on page load
   useEffect(() => {
     const getUserConfig: () => Promise<void> = async () => {
@@ -276,7 +279,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               <Combobox
                 items={Object.keys(BACKGROUND_COMPONENTS)}
                 defaultValue={Object.keys(BACKGROUND_COMPONENTS)[0]}
-                value={config.background.type}
+                value={capitalized(config.background.type)}
                 onInputValueChange={(value) =>
                   setConfig((prev) => ({
                     ...prev,
@@ -293,7 +296,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
                   <ComboboxList>
                     {(item) => (
                       <ComboboxItem key={item} value={item}>
-                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                        {capitalized(item)}
                       </ComboboxItem>
                     )}
                   </ComboboxList>
@@ -308,7 +311,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               <Combobox
                 items={Object.keys(BACKGROUND_EFFECTS_COMPONENTS)}
                 defaultValue={Object.keys(BACKGROUND_EFFECTS_COMPONENTS)[0]}
-                value={config.background.effect?.type || "none"}
+                value={capitalized(config.background.effect?.type)}
                 onInputValueChange={(value) =>
                   setConfig((prev) => ({
                     ...prev,
@@ -328,7 +331,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
                   <ComboboxList>
                     {(item) => (
                       <ComboboxItem key={item} value={item}>
-                        {item.charAt(0).toUpperCase() + item.slice(1)}
+                        {capitalized(item)}
                       </ComboboxItem>
                     )}
                   </ComboboxList>

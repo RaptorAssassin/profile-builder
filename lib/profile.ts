@@ -1,5 +1,6 @@
 import { ProfileConfig, ProfileContent } from "@/types/profile"
 import { createClient } from "@/lib/supabase/client"
+import { RESERVED_USERNAMES } from "./data"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {
@@ -34,9 +35,7 @@ export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
   bio: "",
 }
 
-export const getProfileConfig = async (
-  username: string
-): Promise<ProfileConfig> => {
+export const getProfileConfig = async (username: string): Promise<ProfileConfig> => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -53,9 +52,7 @@ export const getProfileConfig = async (
   } as ProfileConfig
 }
 
-export const getProfileContent = async (
-  username: string
-): Promise<ProfileContent> => {
+export const getProfileContent = async (username: string): Promise<ProfileContent> => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -72,16 +69,10 @@ export const getProfileContent = async (
   } as ProfileContent
 }
 
-export const updateProfileConfig = async (
-  userId: string,
-  config: ProfileConfig
-): Promise<void> => {
+export const updateProfileConfig = async (userId: string, config: ProfileConfig): Promise<void> => {
   const supabase = await createClient()
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({ config })
-    .eq("id", userId)
+  const { error } = await supabase.from("profiles").update({ config }).eq("id", userId)
 
   if (error) throw error
 }
@@ -92,10 +83,7 @@ export const updateProfileContent = async (
 ): Promise<void> => {
   const supabase = await createClient()
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({ content })
-    .eq("id", userId)
+  const { error } = await supabase.from("profiles").update({ content }).eq("id", userId)
 
   if (error) throw error
 }
@@ -146,11 +134,14 @@ export const hasCurrentUserUsername = async (
   return data !== null
 }
 
-export const updateUsername = async (
-  userId: string,
-  newUsername: string
-): Promise<void> => {
+export const updateUsername = async (userId: string, newUsername: string): Promise<void> => {
   const supabase = await createClient()
+
+  newUsername = newUsername.toLowerCase()
+
+  if (RESERVED_USERNAMES.includes(newUsername)) {
+    throw new Error("This username is reserved and cannot be used.")
+  }
 
   const { error } = await supabase
     .from("profiles")

@@ -2,6 +2,7 @@ export type BackgroundType = "color" | "gradient" | "image" | "video"
 
 export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
 
+
 export type BackgroundTypeProps = {
   color: {
     color: string // Color in hex
