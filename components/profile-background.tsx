@@ -1,5 +1,5 @@
 import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
-import { BackgroundType, ProfileConfig } from "@/types/profile"
+import { ProfileConfig } from "@/types/profile"
 
 type ProfileBackgroundProps = {
   config: ProfileConfig

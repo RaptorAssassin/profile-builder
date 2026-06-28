@@ -3,17 +3,26 @@ export function ColorBackground({ color }: { color: string }) {
 }
 
 export function GradientBackground({ gradient }: { gradient: string }) {
-    return <div className="h-full w-full" style={{ background: gradient }}></div>
+  return <div className="h-full w-full" style={{ background: gradient }}></div>
 }
 
 export function ImageBackground({ imageUrl }: { imageUrl: string }) {
-    return <div className="h-full w-full" style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+  return (
+    <div
+      className="h-full w-full"
+      style={{
+        backgroundImage: `url(${imageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    ></div>
+  )
 }
 
 export function VideoBackground({ videoUrl }: { videoUrl: string }) {
-    return (
-        <video className="h-full w-full object-cover" autoPlay loop muted>
-            <source src={videoUrl} type="video/mp4" />
-        </video>
-    )
+  return (
+    <video className="h-full w-full object-cover" autoPlay loop muted>
+      <source src={videoUrl} type="video/mp4" />
+    </video>
+  )
 }

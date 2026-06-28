@@ -22,8 +22,8 @@ export default async function Profile({ params }: ProfileProps) {
 
     return (
       <div className="relative h-dvh w-full">
-        <ProfileBackground config={config as ProfileConfig} />
-        <ProfileCard config={config as ProfileConfig} content={content as ProfileContent} />
+        <ProfileBackground config={config} />
+        <ProfileCard config={config} content={content} />
       </div>
     )
   } catch (error) {

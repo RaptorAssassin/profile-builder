@@ -2,7 +2,6 @@ export type BackgroundType = "color" | "gradient" | "image" | "video"
 
 export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
 
-
 export type BackgroundTypeProps = {
   color: {
     color: string // Color in hex
@@ -64,5 +63,6 @@ export type ProfileContent = {
   name?: string
   bio?: string
   location?: string
+  profilePictureSrc?: string
   links?: ProfileLink[]
 }
