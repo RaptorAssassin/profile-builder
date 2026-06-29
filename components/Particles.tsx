@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, RefObject } from "react"
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl"
 
 interface ParticlesProps {
@@ -16,6 +16,7 @@ interface ParticlesProps {
   disableRotation?: boolean
   pixelRatio?: number
   className?: string
+  ref?: RefObject<HTMLDivElement | null>
 }
 
 const defaultColors: string[] = ["#ffffff", "#ffffff", "#ffffff"]
@@ -115,6 +116,7 @@ const Particles: React.FC<ParticlesProps> = ({
   disableRotation = false,
   pixelRatio = 1,
   className,
+  ref,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
@@ -148,7 +150,7 @@ const Particles: React.FC<ParticlesProps> = ({
     }
 
     if (moveParticlesOnHover) {
-      container.addEventListener("mousemove", handleMouseMove)
+      window.addEventListener("mousemove", handleMouseMove)
     }
 
     const count = particleCount
@@ -228,7 +230,7 @@ const Particles: React.FC<ParticlesProps> = ({
     return () => {
       window.removeEventListener("resize", resize)
       if (moveParticlesOnHover) {
-        container.removeEventListener("mousemove", handleMouseMove)
+        window.removeEventListener("mousemove", handleMouseMove)
       }
       cancelAnimationFrame(animationFrameId)
       if (container.contains(gl.canvas)) {

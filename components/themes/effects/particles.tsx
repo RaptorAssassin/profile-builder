@@ -21,7 +21,7 @@ export default function Particles({
       particleHoverFactor={1}
       alphaParticles={false}
       particleBaseSize={100}
-      sizeRandomness={1}
+      sizeRandomness={0.5}
       cameraDistance={20}
       disableRotation
       className="h-full w-full"

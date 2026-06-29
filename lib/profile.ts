@@ -22,7 +22,7 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
       backgroundColor: "#000000",
       opacity: 1,
       textColor: "#ffffff",
-      borderColor: "#cccccc",
+      borderColor: "#2e2e2e",
       borderWidth: 1,
       borderRadius: 8,
       padding: 16,
