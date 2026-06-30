@@ -1,3 +1,8 @@
+/**
+ * Simple Color Background
+ * @param color - Hex Color to render
+ * @returns - The Background with the specified color
+ */
 export function ColorBackground({ color }: { color: string }) {
   return <div className="h-full w-full" style={{ backgroundColor: color }}></div>
 }

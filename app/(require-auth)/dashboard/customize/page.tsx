@@ -1,5 +1,7 @@
 "use client"
-import { use, useEffect, useRef, useState } from "react"
+import { use, useEffect, useRef, useState, useCallback } from "react"
+import Color, { type ColorLike } from "color"
+import { BackgroundTypeProps } from "@/types/profile"
 import { DashboardSection } from "@/components/dashboard-section"
 import {
   Combobox,
@@ -40,6 +42,7 @@ import { CheckIcon, GlobeIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-rea
 import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
+import { ColorPicker } from "@/components/ui/color-picker"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -173,10 +176,52 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     }
   }
 
+  const handleBackgroundColorChange = useCallback((value: ColorLike) => {
+    const hex = Color(value).hex()
+
+    setConfig((prev) => {
+      if (prev.background.type !== "color") return prev
+
+      if (prev.background.config.color === hex) {
+        return prev
+      }
+
+      return {
+        ...prev,
+        background: {
+          ...prev.background,
+          config: {
+            ...prev.background.config,
+            color: hex,
+          },
+        },
+      }
+    })
+  }, [])
+
+  const defaultConfigs = {
+    color: {
+      color: "#ffffff",
+    },
+    gradient: {
+      from: "#ffffff",
+      to: "#000000",
+    },
+    image: {
+      imageUrl: "",
+    },
+    video: {
+      videoUrl: "",
+      speed: 1,
+    },
+  } satisfies {
+    [K in BackgroundType]: BackgroundTypeProps[K]
+  }
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
       {/* Content */}
-      <h1 className="text-2xl font-bold">Content</h1>
+      <SectionHeading>Content</SectionHeading>
       <DashboardSection className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Username */}
         <div className="">
@@ -268,8 +313,8 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           </Field>
         </div>
       </DashboardSection>
-      {/* Visuals */}
-      <h1 className="text-2xl font-bold">Visuals</h1>
+      {/* Background */}
+      <SectionHeading>Background</SectionHeading>
       <DashboardSection>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Background */}
@@ -280,15 +325,24 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
                 items={Object.keys(BACKGROUND_COMPONENTS)}
                 defaultValue={Object.keys(BACKGROUND_COMPONENTS)[0]}
                 value={capitalized(config.background.type)}
-                onInputValueChange={(value) =>
-                  setConfig((prev) => ({
-                    ...prev,
-                    background: {
-                      ...prev.background,
-                      type: value as BackgroundType,
-                    },
-                  }))
-                }
+                onInputValueChange={(color) => {
+                  if (config.background.type !== "color") return
+
+                  setConfig((prev) => {
+                    if (prev.background.type !== "color") return prev
+
+                    return {
+                      ...prev,
+                      background: {
+                        ...prev.background,
+                        config: {
+                          ...prev.background.config,
+                          color,
+                        },
+                      },
+                    }
+                  })
+                }}
               >
                 <ComboboxInput className="capitalize" placeholder="Select a Background" />
                 <ComboboxContent>
@@ -304,6 +358,18 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               </Combobox>
             </Field>
           </div>
+
+          {config.background.type === "color" && (
+            <div className="">
+              <Field>
+                <FieldLabel>Background Color</FieldLabel>
+                <ColorPicker
+                  value={config.background.config.color}
+                  onChange={handleBackgroundColorChange}
+                />
+              </Field>
+            </div>
+          )}
           {/* Background Effect */}
           <div className="">
             <Field>
@@ -341,6 +407,16 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           </div>
         </div>
       </DashboardSection>
+      {/* Card */}
+      <SectionHeading>Card</SectionHeading>
+      <DashboardSection>
+        {/* color, opacity, border (width, color, radius), profile picture roundness, 3d bend effect, cursor glow effects */}
+        <div className=""></div>
+      </DashboardSection>
     </div>
   )
+}
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return <h1 className="text-2xl font-bold">{children}</h1>
 }

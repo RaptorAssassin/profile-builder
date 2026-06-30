@@ -4,7 +4,7 @@ export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
 
 export type BackgroundTypeProps = {
   color: {
-    color: string // Color in hex
+    color: string
   }
   gradient: {
     from: string
@@ -19,6 +19,26 @@ export type BackgroundTypeProps = {
   }
 }
 
+
+
+export type BackgroundConfig =
+  | {
+      type: "color"
+      config: BackgroundTypeProps["color"]
+    }
+  | {
+      type: "gradient"
+      config: BackgroundTypeProps["gradient"]
+    }
+  | {
+      type: "image"
+      config: BackgroundTypeProps["image"]
+    }
+  | {
+      type: "video"
+      config: BackgroundTypeProps["video"]
+    }
+
 export type BackgroundEffectProps = {
   none: {}
   rain: {}
@@ -31,9 +51,7 @@ export type BackgroundEffectProps = {
 }
 
 export type ProfileConfig = {
-  background: {
-    type: BackgroundType
-    config: BackgroundTypeProps[BackgroundType]
+  background: BackgroundConfig & {
     effect?: {
       type: BackgroundEffect
       config?: BackgroundEffectProps[BackgroundEffect]
