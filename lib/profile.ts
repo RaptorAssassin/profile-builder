@@ -1,4 +1,4 @@
-import { ProfileConfig, ProfileContent } from "@/types/profile"
+import { BackgroundType, ProfileConfig, ProfileContent, BackgroundTypeProps } from "@/types/profile"
 import { createClient } from "@/lib/supabase/client"
 import { RESERVED_USERNAMES } from "./data"
 
@@ -33,6 +33,25 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
 export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
   name: "",
   bio: "",
+}
+
+export const DEFAULT_BACKGROUND_CONFIGS = {
+  color: {
+    color: "#2E2E2E",
+  },
+  gradient: {
+    from: "#3b82f6",
+    to: "#8b5cf6",
+  },
+  image: {
+    imageUrl: "",
+  },
+  video: {
+    videoUrl: "",
+    speed: 1,
+  },
+} satisfies {
+  [K in keyof BackgroundTypeProps]: BackgroundTypeProps[K]
 }
 
 export const getProfileConfig = async (username: string): Promise<ProfileConfig> => {

@@ -12,6 +12,7 @@ export type BackgroundTypeProps = {
   }
   image: {
     imageUrl: string
+    blur?: string
   }
   video: {
     videoUrl: string

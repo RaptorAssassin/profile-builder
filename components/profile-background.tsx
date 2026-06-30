@@ -41,10 +41,10 @@ export default function ProfileBackground({ config }: ProfileBackgroundProps) {
   //   }
 
   return (
-    <div className="absolute inset-0 h-full w-full overflow-hidden">
+    <div className="absolute inset-0 h-full w-full overflow-hidden select-none">
       <div className="relative h-full w-full">
         <div className="absolute inset-0">
-          <Background {...backgroundConfig} />
+          {backgroundConfig && <Background {...backgroundConfig} />}
         </div>
         <div className="absolute inset-0">
           {BackgroundEffect && (

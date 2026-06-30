@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 /**
  * Simple Color Background
  * @param color - Hex Color to render
@@ -13,14 +15,13 @@ export function GradientBackground({ gradient }: { gradient: string }) {
 
 export function ImageBackground({ imageUrl }: { imageUrl: string }) {
   return (
-    <div
+    <Image
       className="h-full w-full"
-      style={{
-        backgroundImage: `url(${imageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    ></div>
+      width={1920}
+      height={1080}
+      src={imageUrl}
+      alt="Background Image"
+    />
   )
 }
 

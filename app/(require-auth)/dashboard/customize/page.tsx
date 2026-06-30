@@ -1,7 +1,7 @@
 "use client"
 import { use, useEffect, useRef, useState, useCallback } from "react"
 import Color, { type ColorLike } from "color"
-import { BackgroundTypeProps } from "@/types/profile"
+import { BackgroundTypeProps, BackgroundConfig } from "@/types/profile"
 import { DashboardSection } from "@/components/dashboard-section"
 import {
   Combobox,
@@ -27,7 +27,6 @@ import {
 } from "@/lib/profile"
 import { ProfileConfig, BackgroundType, ProfileContent, BackgroundEffect } from "@/types/profile"
 import { createClient } from "@/lib/supabase/client"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -43,6 +42,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
 import { ColorPicker } from "@/components/ui/color-picker"
+import { DEFAULT_BACKGROUND_CONFIGS } from "@/lib/profile"
+import { Input } from "@/components/ui/input"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -218,11 +219,48 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     [K in BackgroundType]: BackgroundTypeProps[K]
   }
 
+  function createBackground(type: BackgroundType): BackgroundConfig {
+    switch (type) {
+      case "color":
+        return {
+          type,
+          config: { color: "#ffffff" },
+        }
+
+      case "gradient":
+        return {
+          type,
+          config: {
+            from: "#ffffff",
+            to: "#000000",
+          },
+        }
+
+      case "image":
+        return {
+          type,
+          config: {
+            imageUrl: "",
+          },
+        }
+
+      case "video":
+        return {
+          type,
+          config: {
+            videoUrl: "",
+            speed: 1,
+          },
+        }
+    }
+  }
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
+      <h1 className="text-4xl font-extrabold">Customize Profile</h1>
       {/* Content */}
       <SectionHeading>Content</SectionHeading>
-      <DashboardSection className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <DashboardSection className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {/* Username */}
         <div className="">
           <Field>
@@ -283,21 +321,32 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           </Field>
         </div>
         {/* Bio */}
-        <div className="max-w-lg">
+        <div className="">
           <Field>
             <FieldLabel>Bio</FieldLabel>
-            <InputGroup>
-              <Textarea
-                value={content.bio}
-                onChange={(e) => setContent((prev) => ({ ...prev, bio: e.target.value }))}
-                placeholder="Bio"
-                className="min-w-sm"
-              />
-            </InputGroup>
+            <Textarea
+              value={content.bio}
+              onChange={(e) => setContent((prev) => ({ ...prev, bio: e.target.value }))}
+              placeholder="Bio"
+              className=""
+            ></Textarea>
+          </Field>
+        </div>
+        {/* Profile Picture */}
+        <div className="">
+          <Field>
+            <FieldLabel>Profile Picture URL</FieldLabel>
+            <Input
+              value={content.profilePictureSrc ?? ""}
+              onChange={(e) =>
+                setContent((prev) => ({ ...prev, profilePictureSrc: e.target.value }))
+              }
+              placeholder="https://example.com/profile-picture.png"
+            />
           </Field>
         </div>
         {/* Location */}
-        <div className="max-w-sm">
+        <div className="">
           <Field>
             <FieldLabel>Location</FieldLabel>
             <InputGroup>
@@ -325,23 +374,16 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
                 items={Object.keys(BACKGROUND_COMPONENTS)}
                 defaultValue={Object.keys(BACKGROUND_COMPONENTS)[0]}
                 value={capitalized(config.background.type)}
-                onInputValueChange={(color) => {
-                  if (config.background.type !== "color") return
+                onInputValueChange={(value) => {
+                  const type = value.toLowerCase() as BackgroundType
 
-                  setConfig((prev) => {
-                    if (prev.background.type !== "color") return prev
-
-                    return {
-                      ...prev,
-                      background: {
-                        ...prev.background,
-                        config: {
-                          ...prev.background.config,
-                          color,
-                        },
-                      },
-                    }
-                  })
+                  setConfig((prev) => ({
+                    ...prev,
+                    background: {
+                      ...createBackground(type),
+                      effect: prev.background.effect,
+                    },
+                  }))
                 }}
               >
                 <ComboboxInput className="capitalize" placeholder="Select a Background" />
