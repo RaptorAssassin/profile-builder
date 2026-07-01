@@ -20,8 +20,6 @@ export type BackgroundTypeProps = {
   }
 }
 
-
-
 export type BackgroundConfig =
   | {
       type: "color"

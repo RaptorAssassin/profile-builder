@@ -412,6 +412,55 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               </Field>
             </div>
           )}
+
+          {(config.background.type === "image" || config.background.type === "video") && (
+            <div className="">
+              <Field>
+                <FieldLabel>Background {capitalized(config.background.type)} URL</FieldLabel>
+                <Input
+                  value={
+                    config.background.type === "image"
+                      ? config.background.config.imageUrl
+                      : config.background.config.videoUrl
+                  }
+                  onChange={(e) => {
+                    const value = e.target.value
+
+                    setConfig((prev) => {
+                      if (prev.background.type === "image") {
+                        return {
+                          ...prev,
+                          background: {
+                            ...prev.background,
+                            config: {
+                              ...prev.background.config,
+                              imageUrl: value,
+                            },
+                          },
+                        }
+                      }
+
+                      if (prev.background.type === "video") {
+                        return {
+                          ...prev,
+                          background: {
+                            ...prev.background,
+                            config: {
+                              ...prev.background.config,
+                              videoUrl: value,
+                            },
+                          },
+                        }
+                      }
+
+                      return prev
+                    })
+                  }}
+                />
+              </Field>
+            </div>
+          )}
+
           {/* Background Effect */}
           <div className="">
             <Field>
