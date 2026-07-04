@@ -44,6 +44,7 @@ import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/back
 import { ColorPicker } from "@/components/ui/color-picker"
 import { DEFAULT_BACKGROUND_CONFIGS } from "@/lib/profile"
 import { Input } from "@/components/ui/input"
+import { uploadImage, updateImage } from "@/lib/storage"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -127,7 +128,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         console.error("Error saving profile data:", error)
       } finally {
         setIsSaving(false)
-        toast.success("Changes saved successfully")
+        //toast.success("Changes saved successfully")
       }
     }, debounceTimeout)
     return () => clearTimeout(timeout)
@@ -204,10 +205,10 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     color: {
       color: "#ffffff",
     },
-    gradient: {
-      from: "#ffffff",
-      to: "#000000",
-    },
+    // gradient: {
+    //   from: "#ffffff",
+    //   to: "#000000",
+    // },
     image: {
       imageUrl: "",
     },
@@ -227,14 +228,14 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           config: { color: "#ffffff" },
         }
 
-      case "gradient":
-        return {
-          type,
-          config: {
-            from: "#ffffff",
-            to: "#000000",
-          },
-        }
+      //   case "gradient":
+      //     return {
+      //       type,
+      //       config: {
+      //         from: "#ffffff",
+      //         to: "#000000",
+      //       },
+      //     }
 
       case "image":
         return {
@@ -337,12 +338,40 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           <Field>
             <FieldLabel>Profile Picture URL</FieldLabel>
             <Input
-              value={content.profilePictureSrc ?? ""}
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+
+                try {
+                  let profilePictureUrl: string
+
+                  if (content.profilePictureSrc) {
+                    profilePictureUrl = await updateImage(content.profilePictureSrc, file)
+                  } else {
+                    profilePictureUrl = await uploadImage(file)
+                  }
+
+                  setContent((prev) => ({
+                    ...prev,
+                    profilePictureSrc: profilePictureUrl,
+                  }))
+
+                  toast.success("Profile picture updated successfully")
+                  e.target.value = ""
+                } catch (error) {
+                  console.error(error)
+                  toast.error("Failed to upload profile picture")
+                }
+              }}
+            />
+            {/* <Input
               onChange={(e) =>
                 setContent((prev) => ({ ...prev, profilePictureSrc: e.target.value }))
               }
               placeholder="https://example.com/profile-picture.png"
-            />
+            /> */}
           </Field>
         </div>
         {/* Location */}

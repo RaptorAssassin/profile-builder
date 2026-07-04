@@ -17,7 +17,7 @@ export function ImageBackground({ imageUrl }: { imageUrl: string }) {
   if (!imageUrl) return
   const url = imageUrl.trim()
   return (
-    <Image className="h-full w-full" width={1920} height={1080} src={url} alt="Background Image" />
+    <Image className="h-full w-full" src={url} width={1920} height={1080} alt="Background Image" />
   )
 }
 

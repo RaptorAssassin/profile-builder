@@ -24,6 +24,8 @@ export async function generateMetadata({ params }: ProfileProps): Promise<Metada
         shortcut: favicon,
         apple: favicon,
       },
+      title: content.name || username,
+      description: `View ${content.name || username}'s profile.`,
     }
   } catch {
     return {}

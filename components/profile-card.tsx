@@ -40,6 +40,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
             className="h-auto w-40 rounded-full"
             width={160}
             height={160}
+            priority
           />
         )}
 

@@ -1,6 +1,14 @@
-export type BackgroundType = "color" | "gradient" | "image" | "video"
+export type BackgroundType =
+  | "color"
+  //"gradient" |
+  | "image"
+  | "video"
 
-export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
+export type BackgroundEffect =
+  | "none"
+  //"rain" |
+  //"snow" |
+  | "particles"
 
 export type BackgroundTypeProps = {
   color: {
@@ -25,10 +33,10 @@ export type BackgroundConfig =
       type: "color"
       config: BackgroundTypeProps["color"]
     }
-  | {
-      type: "gradient"
-      config: BackgroundTypeProps["gradient"]
-    }
+  //   | {
+  //       type: "gradient"
+  //       config: BackgroundTypeProps["gradient"]
+  //     }
   | {
       type: "image"
       config: BackgroundTypeProps["image"]
@@ -40,8 +48,8 @@ export type BackgroundConfig =
 
 export type BackgroundEffectProps = {
   none: {}
-  rain: {}
-  snow: {}
+  //rain: {}
+  //snow: {}
   particles: {
     interactive?: boolean // default true
     speed?: number // default 100
