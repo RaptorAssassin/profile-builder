@@ -45,6 +45,7 @@ import { ColorPicker } from "@/components/ui/color-picker"
 import { DEFAULT_BACKGROUND_CONFIGS } from "@/lib/profile"
 import { Input } from "@/components/ui/input"
 import { uploadImage, updateImage } from "@/lib/storage"
+import Image from "next/image"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -256,6 +257,8 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     }
   }
 
+  const inputRef = useRef<HTMLInputElement>(null)
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <h1 className="text-4xl font-extrabold">Customize Profile</h1>
@@ -334,10 +337,24 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           </Field>
         </div>
         {/* Profile Picture */}
-        <div className="">
-          <Field>
-            <FieldLabel>Profile Picture URL</FieldLabel>
+        <div className="flex gap-2">
+          {content.profilePictureSrc && (
+            <Image
+              src={content.profilePictureSrc}
+              alt="Profile Picture"
+              width={500}
+              height={500}
+              className="h-auto w-3/5 shrink rounded-(--radius)"
+            />
+          )}
+          <Field className="flex-1">
+            <FieldLabel>Profile Picture</FieldLabel>
+            <Button onClick={() => inputRef.current?.click()} variant={"secondary"}>
+              Choose File
+            </Button>
             <Input
+              ref={inputRef}
+              className="hidden"
               type="file"
               accept="image/*"
               onChange={async (e) => {
@@ -366,12 +383,6 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
                 }
               }}
             />
-            {/* <Input
-              onChange={(e) =>
-                setContent((prev) => ({ ...prev, profilePictureSrc: e.target.value }))
-              }
-              placeholder="https://example.com/profile-picture.png"
-            /> */}
           </Field>
         </div>
         {/* Location */}

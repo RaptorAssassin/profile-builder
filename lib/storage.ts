@@ -92,6 +92,11 @@ export async function deleteImage(imageUrl: string): Promise<void> {
  * @returns A promise resolving to the URL of the updated image
  */
 export async function updateImage(currentImageUrl: string, newImage: File): Promise<string> {
-  await deleteImage(currentImageUrl)
+  try {
+    await deleteImage(currentImageUrl)
+  } catch (error) {
+    console.error("Failed to delete the current image:", error)
+  }
+
   return uploadImage(newImage)
 }
