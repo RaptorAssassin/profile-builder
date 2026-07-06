@@ -37,7 +37,17 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group"
-import { CheckIcon, GlobeIcon, MapPinIcon, TextIcon, UserIcon } from "lucide-react"
+import {
+  CheckIcon,
+  EditIcon,
+  GlobeIcon,
+  ImageIcon,
+  MapPinIcon,
+  SparklesIcon,
+  TextIcon,
+  TextSelectIcon,
+  UserIcon,
+} from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { BACKGROUND_COMPONENTS, BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
@@ -46,6 +56,12 @@ import { DEFAULT_BACKGROUND_CONFIGS } from "@/lib/profile"
 import { Input } from "@/components/ui/input"
 import { uploadImage, updateImage } from "@/lib/storage"
 import Image from "next/image"
+import UsernameInput from "@/components/dashboard/username"
+import { capitalized } from "@/lib/utils"
+import NameInput from "@/components/dashboard/name"
+import Bio from "@/components/dashboard/bio"
+import ProfilePicture from "@/components/dashboard/profile-picture"
+import Location from "@/components/dashboard/location"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -56,12 +72,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
 
   const router = useRouter()
 
-  const domain = "profile-builder.vercel.app"
-
   const usernameInput = useRef<HTMLInputElement>(null)
-
-  const capitalized = (str: string | undefined) =>
-    str ? str.charAt(0).toUpperCase() + str.slice(1) : ""
 
   // Load user config on page load
   useEffect(() => {
@@ -136,48 +147,6 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
   }, [config, content, isLoading])
 
   type changeUsernameResponse = "success" | "username_taken" | "error"
-
-  const changeUsername = async (newUsername: string) => {
-    // Check if username is taken
-    const supabase = await createClient()
-    const userId = await supabase.auth
-      .getUser()
-      .then(({ data: { user } }) => user?.id)
-      .catch(() => null)
-    if (!userId) {
-      router.push("/auth")
-      return
-    }
-    const usernameTaken = await isUsernameTaken(newUsername)
-    const userHasUsername = await hasCurrentUserUsername(userId, newUsername)
-
-    if (userHasUsername) {
-      toast.success("Username updated successfully")
-      return
-    }
-
-    if (usernameTaken && !userHasUsername) {
-      toast.error("Username is already taken")
-      return
-    }
-
-    // If available, update username in db and update state
-    try {
-      const supabase = await createClient()
-      const userId = await supabase.auth
-        .getUser()
-        .then(({ data: { user } }) => user?.id)
-        .catch(() => null)
-      if (!userId) {
-        router.push("/auth")
-        return
-      }
-      await updateUsername(userId, newUsername)
-      toast.success("Username updated successfully")
-    } catch (error) {
-      toast.error("Error updating username")
-    }
-  }
 
   const handleBackgroundColorChange = useCallback((value: ColorLike) => {
     const hex = Color(value).hex()
@@ -261,149 +230,38 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
 
   return (
     <div className="flex h-full w-full flex-col gap-4">
-      <h1 className="text-4xl font-extrabold">Customize Profile</h1>
+      <h1 className="flex items-center gap-2 text-4xl font-extrabold">
+        <EditIcon size={32} strokeWidth={3} />
+        Customize Profile
+      </h1>
       {/* Content */}
-      <SectionHeading>Content</SectionHeading>
-      <DashboardSection className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-        {/* Username */}
-        <div className="">
-          <Field>
-            <FieldLabel>Username</FieldLabel>
-
-            <div className="flex items-center gap-2">
-              <InputGroup className="flex-1">
-                <InputGroupAddon align="inline-start">
-                  <GlobeIcon />
-                </InputGroupAddon>
-
-                <InputGroupAddon>
-                  <InputGroupText>{domain}/</InputGroupText>
-                </InputGroupAddon>
-
-                <InputGroupInput
-                  className="pl-0.5!"
-                  placeholder="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  ref={usernameInput}
-                />
-              </InputGroup>
-
-              <Button
-                onClick={() => changeUsername(username)}
-                variant="outline"
-                className="shrink-0"
-              >
-                <CheckIcon />
-              </Button>
-            </div>
-            <FieldDescription>Select a unique username.</FieldDescription>
-          </Field>
-        </div>
-        {/* Display Name */}
-        <div className="">
-          <Field>
-            <FieldLabel>Display Name</FieldLabel>
-            <InputGroup>
-              <InputGroupAddon align="inline-start">
-                <UserIcon />
-              </InputGroupAddon>
-              <InputGroupInput
-                placeholder="Display name"
-                value={content.name}
-                onChange={(e) =>
-                  setContent((prev) => ({
-                    ...prev,
-                    name: e.target.value,
-                  }))
-                }
-              />
-            </InputGroup>
-            <FieldDescription>
-              This will be displayed as your name on your profile.
-            </FieldDescription>
-          </Field>
-        </div>
-        {/* Bio */}
-        <div className="">
-          <Field>
-            <FieldLabel>Bio</FieldLabel>
-            <Textarea
-              value={content.bio}
-              onChange={(e) => setContent((prev) => ({ ...prev, bio: e.target.value }))}
-              placeholder="Bio"
-              className=""
-            ></Textarea>
-          </Field>
-        </div>
-        {/* Profile Picture */}
-        <div className="flex gap-2">
-          {content.profilePictureSrc && (
-            <Image
-              src={content.profilePictureSrc}
-              alt="Profile Picture"
-              width={500}
-              height={500}
-              className="h-auto w-3/5 shrink rounded-(--radius)"
-            />
-          )}
-          <Field className="flex-1">
-            <FieldLabel>Profile Picture</FieldLabel>
-            <Button onClick={() => inputRef.current?.click()} variant={"secondary"}>
-              Choose File
-            </Button>
-            <Input
-              ref={inputRef}
-              className="hidden"
-              type="file"
-              accept="image/*"
-              onChange={async (e) => {
-                const file = e.target.files?.[0]
-                if (!file) return
-
-                try {
-                  let profilePictureUrl: string
-
-                  if (content.profilePictureSrc) {
-                    profilePictureUrl = await updateImage(content.profilePictureSrc, file)
-                  } else {
-                    profilePictureUrl = await uploadImage(file)
-                  }
-
-                  setContent((prev) => ({
-                    ...prev,
-                    profilePictureSrc: profilePictureUrl,
-                  }))
-
-                  toast.success("Profile picture updated successfully")
-                  e.target.value = ""
-                } catch (error) {
-                  console.error(error)
-                  toast.error("Failed to upload profile picture")
-                }
-              }}
-            />
-          </Field>
-        </div>
-        {/* Location */}
-        <div className="">
-          <Field>
-            <FieldLabel>Location</FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                placeholder="Location"
-                value={content.location ?? ""}
-                onChange={(e) => setContent((prev) => ({ ...prev, location: e.target.value }))}
-              />
-              <InputGroupAddon align={"inline-start"}>
-                <MapPinIcon />
-              </InputGroupAddon>
-            </InputGroup>
-          </Field>
-        </div>
+      <SectionHeading>
+        <TextIcon />
+        Content
+      </SectionHeading>
+      <DashboardSection className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2">
+        <UsernameInput username={username} onChange={setUsername} ref={usernameInput} />
+        <NameInput
+          name={content.name ?? ""}
+          onChange={(name) => setContent((prev) => ({ ...prev, name }))}
+        />
+        <Bio bio={content.bio ?? ""} onChange={(bio) => setContent((prev) => ({ ...prev, bio }))} />
+        <ProfilePicture
+          profilePictureSrc={content.profilePictureSrc}
+          onChange={(profilePictureUrl) =>
+            setContent((prev) => ({ ...prev, profilePictureSrc: profilePictureUrl }))
+          }
+        />
+        <Location
+          location={content.location}
+          onChange={(location) => setContent((prev) => ({ ...prev, location }))}
+        />
       </DashboardSection>
       {/* Background */}
-      <SectionHeading>Background</SectionHeading>
+      <SectionHeading>
+        <SparklesIcon />
+        Background
+      </SectionHeading>
       <DashboardSection>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Background */}
@@ -539,7 +397,10 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         </div>
       </DashboardSection>
       {/* Card */}
-      <SectionHeading>Card</SectionHeading>
+      <SectionHeading>
+        <TextSelectIcon />
+        Card
+      </SectionHeading>
       <DashboardSection>
         {/* color, opacity, border (width, color, radius), profile picture roundness, 3d bend effect, cursor glow effects */}
         <div className=""></div>
@@ -549,5 +410,5 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
-  return <h1 className="text-2xl font-bold">{children}</h1>
+  return <h1 className="flex items-center gap-2 text-2xl font-bold">{children}</h1>
 }
