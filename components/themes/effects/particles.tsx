@@ -1,9 +1,9 @@
 import ParticleBackground from "@/components/particles"
 
 type ParticlesProps = {
-  interactive?: boolean // default true
-  speed?: number // default 100
-  color?: string // hex color of particles
+  interactive?: boolean
+  speed?: number
+  color?: string
 }
 
 export default function Particles({
@@ -13,7 +13,7 @@ export default function Particles({
 }: ParticlesProps) {
   return (
     <ParticleBackground
-      particleCount={200}
+      particleCount={300}
       particleSpread={10}
       speed={0.1 * (speed / 100)}
       particleColors={color ? [color] : ["#ffffff"]}
@@ -22,7 +22,7 @@ export default function Particles({
       alphaParticles={false}
       particleBaseSize={100}
       sizeRandomness={0.5}
-      cameraDistance={20}
+      cameraDistance={50}
       disableRotation
       className="h-full w-full"
     />

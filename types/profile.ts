@@ -9,6 +9,7 @@ export type BackgroundEffect =
   //"rain" |
   //"snow" |
   | "particles"
+  | "lightfall"
 
 export type BackgroundTypeProps = {
   color: {
@@ -55,14 +56,18 @@ export type BackgroundEffectProps = {
     speed?: number // default 100
     color?: string // hex color of particles
   }
+  lightfall: {
+    interactive?: boolean // default true
+    speed?: number // default 100
+    colors?: string[] // hex colors of lightfalls
+  }
 }
 
 export type ProfileConfig = {
-  background: BackgroundConfig & {
-    effect?: {
-      type: BackgroundEffect
-      config?: BackgroundEffectProps[BackgroundEffect]
-    }
+  background: BackgroundConfig
+  effect?: {
+    type: BackgroundEffect
+    config?: BackgroundEffectProps[BackgroundEffect]
   }
   card: {
     config: {

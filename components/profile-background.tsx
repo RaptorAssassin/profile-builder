@@ -8,7 +8,7 @@ type ProfileBackgroundProps = {
 export default function ProfileBackground({ config }: ProfileBackgroundProps) {
   const backgroundConfig = config.background
   const Background = BACKGROUND_COMPONENTS[backgroundConfig.type]
-  const BackgroundEffect = BACKGROUND_EFFECTS_COMPONENTS[backgroundConfig.effect?.type || "none"]
+  const BackgroundEffect = BACKGROUND_EFFECTS_COMPONENTS[config.effect?.type || "none"]
 
   return (
     <div className="absolute inset-0 h-full w-full overflow-hidden select-none">
@@ -19,8 +19,8 @@ export default function ProfileBackground({ config }: ProfileBackgroundProps) {
         <div className="absolute inset-0">
           {BackgroundEffect && (
             <BackgroundEffect
-              {...backgroundConfig.effect}
-              //{...(backgroundConfig.effect?.type === "particles" ? { ref: particlesLayerRef } : {})}
+              {...config.effect}
+              //{...(config.effect?.type === "particles" ? { ref: particlesLayerRef } : {})}
             />
           )}
         </div>

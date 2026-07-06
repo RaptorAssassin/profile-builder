@@ -24,4 +24,5 @@ export const BACKGROUND_EFFECTS_COMPONENTS: Record<BackgroundEffect, ComponentTy
   //   rain: dynamic(() => import("../components/themes/effects/rain")),
   //   snow: dynamic(() => import("../components/themes/effects/snow")),
   particles: dynamic(() => import("../components/themes/effects/particles")),
+  lightfall: dynamic(() => import("../components/themes/effects/lightfall")),
 }

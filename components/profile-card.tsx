@@ -34,14 +34,15 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
       <div className="relative z-10 flex flex-col items-center gap-4">
         {/* Profile Picture */}
         {cardContent.profilePictureSrc && (
-          <Image
-            src={cardContent.profilePictureSrc}
-            alt="Profile Picture"
-            className="h-auto w-40 rounded-full"
-            width={160}
-            height={160}
-            priority
-          />
+          <div className="relative h-40 w-40 overflow-hidden rounded-full">
+            <Image
+              src={cardContent.profilePictureSrc}
+              alt="Profile Picture"
+              className="object-cover object-center"
+              fill
+              priority
+            />
+          </div>
         )}
 
         {/* Name */}
@@ -52,7 +53,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
 
         {/* Location */}
         {cardContent.location && (
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-1">
             <MapPinIcon />
             {cardContent.location}
           </div>

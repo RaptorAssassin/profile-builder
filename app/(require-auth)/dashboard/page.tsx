@@ -21,10 +21,7 @@ export default async function Dashboard() {
     redirect("/dashboard/customize")
   }
 
-  return (
-    <div className="h-full w-full">
-      {/* TODO: Show Analytics (e. g. profile views) in a short summary */}
-      {/* When the user doesn't have a profile created, show a prompt to create one with a specific username */}
-    </div>
-  )
+  redirect("/dashboard/customize")
+
+  return <div className="h-full w-full"></div>
 }

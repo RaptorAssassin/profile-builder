@@ -8,13 +8,13 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
     config: {
       color: "#000000",
     },
-    effect: {
-      type: "particles",
-      config: {
-        color: "#ffffff",
-        speed: 100,
-        interactive: true,
-      },
+  },
+  effect: {
+    type: "particles",
+    config: {
+      color: "#ffffff",
+      speed: 100,
+      interactive: true,
     },
   },
   card: {
@@ -68,6 +68,23 @@ export const getProfileConfig = async (username: string): Promise<ProfileConfig>
   return {
     ...DEFAULT_PROFILE_CONFIG,
     ...(data?.config ?? {}),
+    background: {
+      ...DEFAULT_PROFILE_CONFIG.background,
+      ...(data?.config?.background ?? {}),
+    },
+    effect:
+      data?.config?.effect ??
+      (data?.config as { background?: { effect?: ProfileConfig["effect"] } } | undefined)
+        ?.background?.effect ??
+      DEFAULT_PROFILE_CONFIG.effect,
+    card: {
+      ...DEFAULT_PROFILE_CONFIG.card,
+      ...(data?.config?.card ?? {}),
+      config: {
+        ...DEFAULT_PROFILE_CONFIG.card.config,
+        ...(data?.config?.card?.config ?? {}),
+      },
+    },
   } as ProfileConfig
 }
 
