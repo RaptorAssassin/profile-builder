@@ -1,16 +1,10 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react"
-import Background from "@/components/dashboard/background"
 import Bio from "@/components/dashboard/bio"
 import Location from "@/components/dashboard/location"
 import NameInput from "@/components/dashboard/name"
 import ProfilePicture from "@/components/dashboard/profile-picture"
 import UsernameInput from "@/components/dashboard/username"
 import { DashboardSection } from "@/components/dashboard-section"
-import { Field, FieldLabel } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
 import {
   DEFAULT_PROFILE_CONFIG,
   DEFAULT_PROFILE_CONTENT,
@@ -22,9 +16,8 @@ import {
   updateProfileConfig,
   updateProfileContent,
 } from "@/lib/profile"
-import { capitalized } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
-import { type BackgroundEffect, ProfileConfig, ProfileContent } from "@/types/profile"
+import { ProfileConfig, ProfileContent } from "@/types/profile"
 import { EditIcon, SparklesIcon, TextIcon, TextSelectIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import BackgroundEffectSelector from "@/components/dashboard/background-effect"
