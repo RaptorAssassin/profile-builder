@@ -1,28 +1,83 @@
-export type BackgroundType = "color" | "gradient" | "image" | "video"
+export type BackgroundType =
+  | "color"
+  //"gradient" |
+  | "image"
+  | "video"
 
-export type BackgroundEffect = "none" | "rain" | "snow" | "particles"
+export type BackgroundEffect =
+  | "none"
+  //"rain" |
+  //"snow" |
+  | "particles"
+  | "lightfall"
+  | "veil"
+  | "plasma"
+
+export type BackgroundTypeProps = {
+  color: {
+    color: string
+  }
+  gradient: {
+    from: string
+    to: string
+  }
+  image: {
+    imageUrl: string
+    blur?: string
+  }
+  video: {
+    videoUrl: string
+    speed?: number
+  }
+}
+
+export type BackgroundConfig =
+  | {
+      type: "color"
+      config: BackgroundTypeProps["color"]
+    }
+  //   | {
+  //       type: "gradient"
+  //       config: BackgroundTypeProps["gradient"]
+  //     }
+  | {
+      type: "image"
+      config: BackgroundTypeProps["image"]
+    }
+  | {
+      type: "video"
+      config: BackgroundTypeProps["video"]
+    }
+
+export type BackgroundEffectProps = {
+  none: {}
+  //rain: {}
+  //snow: {}
+  particles: {
+    interactive?: boolean // default true
+    speed?: number // default 100
+    color?: string // hex color of particles
+  }
+  lightfall: {
+    interactive?: boolean // default true
+    speed?: number // default 100
+    colors?: string[] // hex colors of lightfalls
+  }
+  veil: {
+    speed?: number
+    hueShift?: number
+  }
+  plasma: {
+    speed?: number
+    colors?: string[] // two hex colors
+  }
+}
 
 export type ProfileConfig = {
-  background: {
-    type: BackgroundType
-    config: {
-      color?: string // Color in hex
-      gradient?: {
-        from: string
-        to: string
-      }
-      imageUrl?: string
-      videoUrl?: string
-      speed?: number
-    }
-    effect?: {
-      type: BackgroundEffect
-      config?: {
-        color?: string
-        speed?: number // 0-200, default 100
-        interactive?: boolean // Allow hover interactivity
-      }
-    }
+  background: BackgroundConfig
+  effect?: {
+    type: BackgroundEffect
+    config?: BackgroundEffectProps[BackgroundEffect]
   }
   card: {
     config: {
@@ -45,8 +100,9 @@ export type ProfileLink = {
 }
 
 export type ProfileContent = {
-  name: string
+  name?: string
   bio?: string
   location?: string
+  profilePictureSrc?: string
   links?: ProfileLink[]
 }

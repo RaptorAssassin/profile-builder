@@ -1,5 +1,6 @@
-import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { createClient } from "@/lib/supabase/server"
+import { BackgroundType, ProfileConfig, ProfileContent, BackgroundTypeProps } from "@/types/profile"
+import { createClient } from "@/lib/supabase/client"
+import { RESERVED_USERNAMES } from "./data"
 
 export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   background: {
@@ -7,13 +8,13 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
     config: {
       color: "#000000",
     },
-    effect: {
-      type: "particles",
-      config: {
-        color: "#ffffff",
-        speed: 100,
-        interactive: true,
-      },
+  },
+  effect: {
+    type: "particles",
+    config: {
+      color: "#ffffff",
+      speed: 100,
+      interactive: true,
     },
   },
   card: {
@@ -21,7 +22,7 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
       backgroundColor: "#000000",
       opacity: 1,
       textColor: "#ffffff",
-      borderColor: "#cccccc",
+      borderColor: "#2e2e2e",
       borderWidth: 1,
       borderRadius: 8,
       padding: 16,
@@ -30,55 +31,165 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
 }
 
 export const DEFAULT_PROFILE_CONTENT: ProfileContent = {
-  name: "Example User",
-  bio: "This is a sample bio.",
-  location: "Example Location",
-  links: [
-    {
-      name: "GitHub",
-      url: "https://github.com/example",
-      customIconUrl: "https://github.com/favicon.ico",
-    },
-  ],
+  name: "",
+  bio: "",
 }
 
-const supabase = createClient()
+export const DEFAULT_BACKGROUND_CONFIGS = {
+  color: {
+    color: "#2E2E2E",
+  },
+  gradient: {
+    from: "#3b82f6",
+    to: "#8b5cf6",
+  },
+  image: {
+    imageUrl: "",
+  },
+  video: {
+    videoUrl: "",
+    speed: 1,
+  },
+} satisfies {
+  [K in keyof BackgroundTypeProps]: BackgroundTypeProps[K]
+}
 
-export const getProfileConfig = async (
-  userId: string
-): Promise<ProfileConfig> => {
-  // Query Profile Config Data from db
+export const getProfileConfig = async (username: string): Promise<ProfileConfig> => {
   const supabase = await createClient()
+
   const { data, error } = await supabase
     .from("profiles")
     .select("config")
-    .eq("id", userId)
+    .eq("username", username)
     .single()
 
   if (error) throw error
 
-  return { ...DEFAULT_PROFILE_CONFIG, ...data?.config } as ProfileConfig
+  return {
+    ...DEFAULT_PROFILE_CONFIG,
+    ...(data?.config ?? {}),
+    background: {
+      ...DEFAULT_PROFILE_CONFIG.background,
+      ...(data?.config?.background ?? {}),
+    },
+    effect:
+      data?.config?.effect ??
+      (data?.config as { background?: { effect?: ProfileConfig["effect"] } } | undefined)
+        ?.background?.effect ??
+      DEFAULT_PROFILE_CONFIG.effect,
+    card: {
+      ...DEFAULT_PROFILE_CONFIG.card,
+      ...(data?.config?.card ?? {}),
+      config: {
+        ...DEFAULT_PROFILE_CONFIG.card.config,
+        ...(data?.config?.card?.config ?? {}),
+      },
+    },
+  } as ProfileConfig
 }
 
-export const getProfileContent = async (
-  userId: string
-): Promise<ProfileContent> => {
-  // Query Profile Content Data from db
+export const getProfileContent = async (username: string): Promise<ProfileContent> => {
   const supabase = await createClient()
+
   const { data, error } = await supabase
     .from("profiles")
     .select("content")
-    .eq("id", userId)
+    .eq("username", username)
     .single()
 
   if (error) throw error
 
-  return { ...DEFAULT_PROFILE_CONTENT, ...data?.content } as ProfileContent
+  return {
+    ...DEFAULT_PROFILE_CONTENT,
+    ...(data?.content ?? {}),
+  } as ProfileContent
+}
+
+export const updateProfileConfig = async (userId: string, config: ProfileConfig): Promise<void> => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from("profiles").update({ config }).eq("id", userId)
+
+  if (error) throw error
+}
+
+export const updateProfileContent = async (
+  userId: string,
+  content: ProfileContent
+): Promise<void> => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from("profiles").update({ content }).eq("id", userId)
+
+  if (error) throw error
+}
+
+export const getUsername = async (userId: string): Promise<string> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", userId)
+    .maybeSingle()
+
+  if (error) throw error
+
+  return data?.username || ""
+}
+
+export const isUsernameTaken = async (username: string): Promise<boolean> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("username", username)
+    .maybeSingle()
+
+  if (error) throw error
+
+  return data !== null
+}
+
+export const hasCurrentUserUsername = async (
+  userId: string,
+  username: string
+): Promise<boolean> => {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", userId)
+    .eq("username", username)
+    .maybeSingle()
+
+  if (error) throw error
+
+  return data !== null
+}
+
+export const updateUsername = async (userId: string, newUsername: string): Promise<void> => {
+  const supabase = await createClient()
+
+  newUsername = newUsername.toLowerCase()
+
+  if (RESERVED_USERNAMES.includes(newUsername)) {
+    throw new Error("This username is reserved and cannot be used.")
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ username: newUsername })
+    .eq("id", userId)
+
+  if (error) throw error
 }
 
 export const hasProfile = async (userId: string): Promise<boolean> => {
-  // Check if profile exists for user
   const supabase = await createClient()
+
   const { data, error } = await supabase
     .from("profiles")
     .select("id")
@@ -88,4 +199,19 @@ export const hasProfile = async (userId: string): Promise<boolean> => {
   if (error) throw error
 
   return data !== null
+}
+
+export const createProfile = async (userId: string): Promise<void> => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.from("profiles").insert([
+    {
+      id: userId,
+      username: `user${Math.floor(Math.random() * 1000)}`,
+      config: DEFAULT_PROFILE_CONFIG,
+      content: DEFAULT_PROFILE_CONTENT,
+    },
+  ])
+
+  if (error) throw error
 }

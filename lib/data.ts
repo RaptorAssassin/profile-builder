@@ -9,3 +9,5 @@ export const RESERVED_USERNAMES = [
   "example",
   "profile",
 ]
+
+export const domain: string = "profile-builder.vercel.app"
