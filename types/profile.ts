@@ -10,6 +10,8 @@ export type BackgroundEffect =
   //"snow" |
   | "particles"
   | "lightfall"
+  | "veil"
+  | "plasma"
 
 export type BackgroundTypeProps = {
   color: {
@@ -60,6 +62,14 @@ export type BackgroundEffectProps = {
     interactive?: boolean // default true
     speed?: number // default 100
     colors?: string[] // hex colors of lightfalls
+  }
+  veil: {
+    speed?: number
+    hueShift?: number
+  }
+  plasma: {
+    speed?: number
+    colors?: string[] // two hex colors
   }
 }
 

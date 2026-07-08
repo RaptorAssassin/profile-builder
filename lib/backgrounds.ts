@@ -25,4 +25,6 @@ export const BACKGROUND_EFFECTS_COMPONENTS: Record<BackgroundEffect, ComponentTy
   //   snow: dynamic(() => import("../components/themes/effects/snow")),
   particles: dynamic(() => import("../components/themes/effects/particles")),
   lightfall: dynamic(() => import("../components/themes/effects/lightfall")),
+  veil: dynamic(() => import("../components/themes/effects/dark-veil")),
+  plasma: dynamic(() => import("../components/themes/effects/plasma-wave")),
 }
