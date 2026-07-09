@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useRef, useState } from "react"
 import Bio from "@/components/dashboard/bio"
 import Location from "@/components/dashboard/location"
@@ -116,7 +118,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         <TextIcon />
         Content
       </SectionHeading>
-      <DashboardSection className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2">
+      <DashboardSection className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2">
         <UsernameInput username={username} onChange={setUsername} ref={usernameInput} />
         <NameInput
           name={content.name ?? ""}

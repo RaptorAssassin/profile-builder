@@ -80,18 +80,17 @@ export type ProfileConfig = {
     config?: BackgroundEffectProps[BackgroundEffect]
   }
   card: {
-    config: {
-      backgroundColor: string
-      opacity: number
-      textColor: string
-      borderColor: string
-      borderWidth?: number
-      borderRadius?: "none" | "small" | "medium" | "large" | number
-      //padding?: number
+    backgroundColor: string
+    opacity: number
+    blur?: number
+    textColor: string
+    borderColor: string
+    borderWidth?: number
+    borderRadius?: "none" | "small" | "medium" | "large" | number
+    //padding?: number
+    icons?: {
+      iconDesign?: "color" | "monochrome" | "custom"
     }
-  }
-  icons?: {
-    iconDesign?: "color" | "monochrome" | "custom"
   }
 }
 
