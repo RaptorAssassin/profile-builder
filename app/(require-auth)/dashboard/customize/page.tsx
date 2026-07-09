@@ -25,6 +25,8 @@ import { useRouter } from "next/navigation"
 import BackgroundEffectSelector from "@/components/dashboard/background-effect"
 import CardBackgroundColor from "@/components/dashboard/card-background-color"
 import CardOpacity from "@/components/dashboard/card-opacity"
+import CardBorderRadius from "@/components/dashboard/card-border-radius"
+import BackgroundBlur from "@/components/dashboard/background-blur"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -182,6 +184,16 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
             onChange={(opacity) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, opacity } }))
             }
+          />
+          <CardBorderRadius
+            borderRadius={config.card.borderRadius || "medium"}
+            onChange={(borderRadius) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderRadius } }))
+            }
+          />
+          <BackgroundBlur
+            blur={config.card.blur ? config.card.blur : "none"}
+            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
           />
         </div>
       </DashboardSection>

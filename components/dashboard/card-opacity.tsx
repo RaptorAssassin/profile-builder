@@ -13,7 +13,13 @@ export default function CardOpacity({ opacity, onChange }: CardOpacityProps) {
         <FieldLabel>Card Opacity</FieldLabel>
         <FieldLabel>{opacity}%</FieldLabel>
       </div>
-      <Slider value={[opacity]} onValueChange={([value]) => onChange(value)} min={0} max={100} />
+      <Slider
+        value={[opacity]}
+        onValueChange={([value]) => onChange(value)}
+        min={0}
+        max={100}
+        step={10}
+      />
     </Field>
   )
 }

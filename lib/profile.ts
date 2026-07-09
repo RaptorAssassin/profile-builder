@@ -19,11 +19,12 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   },
   card: {
     backgroundColor: "#000000",
-    opacity: 1,
+    opacity: 100,
+    blur: "none",
     textColor: "#ffffff",
     borderColor: "#2e2e2e",
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: "medium",
   },
 }
 
@@ -62,27 +63,34 @@ export const getProfileConfig = async (username: string): Promise<ProfileConfig>
 
   if (error) throw error
 
+  const config = data?.config ?? {}
+
   return {
     ...DEFAULT_PROFILE_CONFIG,
-    ...(data?.config ?? {}),
+    ...config,
+
     background: {
       ...DEFAULT_PROFILE_CONFIG.background,
-      ...(data?.config?.background ?? {}),
+      ...(config.background ?? {}),
     },
-    effect:
-      data?.config?.effect ??
-      (data?.config as { background?: { effect?: ProfileConfig["effect"] } } | undefined)
-        ?.background?.effect ??
-      DEFAULT_PROFILE_CONFIG.effect,
+
+    effect: config.effect
+      ? {
+          ...DEFAULT_PROFILE_CONFIG.effect,
+          ...config.effect,
+        }
+      : DEFAULT_PROFILE_CONFIG.effect,
+
     card: {
       ...DEFAULT_PROFILE_CONFIG.card,
-      ...(data?.config?.card ?? {}),
-      config: {
-        ...DEFAULT_PROFILE_CONFIG.card.config,
-        ...(data?.config?.card?.config ?? {}),
+      ...(config.card ?? {}),
+
+      icons: {
+        ...DEFAULT_PROFILE_CONFIG.card.icons,
+        ...(config.card?.icons ?? {}),
       },
     },
-  } as ProfileConfig
+  }
 }
 
 export const getProfileContent = async (username: string): Promise<ProfileContent> => {

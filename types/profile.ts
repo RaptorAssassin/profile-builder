@@ -73,6 +73,9 @@ export type BackgroundEffectProps = {
   }
 }
 
+export type BorderRadius = "none" | "small" | "medium" | "large"
+export type Blur = "none" | "small" | "medium" | "large"
+
 export type ProfileConfig = {
   background: BackgroundConfig
   effect?: {
@@ -82,11 +85,11 @@ export type ProfileConfig = {
   card: {
     backgroundColor: string
     opacity: number
-    blur?: number
+    blur?: Blur
     textColor: string
     borderColor: string
     borderWidth?: number
-    borderRadius?: "none" | "small" | "medium" | "large" | number
+    borderRadius?: BorderRadius
     icons?: {
       iconDesign?: "color" | "monochrome" | "custom"
     }
