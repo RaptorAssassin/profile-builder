@@ -8,7 +8,7 @@ type ProfileCardProps = {
 }
 
 export default function ProfileCard({ config, content }: ProfileCardProps) {
-  const cardConfig = config.card.config
+  const cardConfig = config.card
   const cardContent = content
   return (
     <div
@@ -26,7 +26,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
         className="absolute inset-0"
         style={{
           backgroundColor: cardConfig.backgroundColor,
-          opacity: cardConfig.opacity,
+          opacity: cardConfig.opacity / 100,
         }}
       />
 

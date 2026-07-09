@@ -18,15 +18,12 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
     },
   },
   card: {
-    config: {
-      backgroundColor: "#000000",
-      opacity: 1,
-      textColor: "#ffffff",
-      borderColor: "#2e2e2e",
-      borderWidth: 1,
-      borderRadius: 8,
-      padding: 16,
-    },
+    backgroundColor: "#000000",
+    opacity: 1,
+    textColor: "#ffffff",
+    borderColor: "#2e2e2e",
+    borderWidth: 1,
+    borderRadius: 8,
   },
 }
 

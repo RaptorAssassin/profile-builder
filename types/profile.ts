@@ -87,7 +87,6 @@ export type ProfileConfig = {
     borderColor: string
     borderWidth?: number
     borderRadius?: "none" | "small" | "medium" | "large" | number
-    //padding?: number
     icons?: {
       iconDesign?: "color" | "monochrome" | "custom"
     }

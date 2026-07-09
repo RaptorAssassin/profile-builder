@@ -14,16 +14,19 @@ export default function CardBackgroundColor({
 }: CardBackgroundColorProps) {
   const handleBackgroundColorChange = useCallback(
     (value: ColorLike) => {
-      const hex = Color(value).hex()
-
-      onChange(hex)
+      try {
+        const hex = Color(value).hex()
+        onChange(hex)
+      } catch (error) {
+        console.error("Invalid color value:", value)
+      }
     },
     [onChange]
   )
 
   return (
     <Field>
-      <FieldLabel>Background Color</FieldLabel>
+      <FieldLabel>Card Color</FieldLabel>
       <ColorPicker value={backgroundColor} onChange={handleBackgroundColorChange} />
     </Field>
   )

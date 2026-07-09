@@ -23,6 +23,8 @@ import { ProfileConfig, ProfileContent } from "@/types/profile"
 import { EditIcon, SparklesIcon, TextIcon, TextSelectIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import BackgroundEffectSelector from "@/components/dashboard/background-effect"
+import CardBackgroundColor from "@/components/dashboard/card-background-color"
+import CardOpacity from "@/components/dashboard/card-opacity"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -168,7 +170,20 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         Card
       </SectionHeading>
       <DashboardSection>
-        <div />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <CardBackgroundColor
+            backgroundColor={config.card.backgroundColor}
+            onChange={(backgroundColor) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, backgroundColor } }))
+            }
+          />
+          <CardOpacity
+            opacity={config.card.opacity}
+            onChange={(opacity) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, opacity } }))
+            }
+          />
+        </div>
       </DashboardSection>
     </div>
   )
