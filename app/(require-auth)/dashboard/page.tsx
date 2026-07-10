@@ -8,7 +8,7 @@ import { cookies } from "next/headers"
 export default async function Dashboard() {
   // Check if the user has a profile, if not redirect to the customize page
   const cookieStore = await cookies()
-  const supabase = await createClient(cookieStore)
+  const supabase = await createClient()
   const userId = await supabase.auth
     .getUser()
     .then(({ data: { user } }) => user?.id)
