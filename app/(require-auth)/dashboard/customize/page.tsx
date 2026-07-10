@@ -1,16 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Background from "@/components/dashboard/background"
 import Bio from "@/components/dashboard/bio"
 import Location from "@/components/dashboard/location"
 import NameInput from "@/components/dashboard/name"
 import ProfilePicture from "@/components/dashboard/profile-picture"
 import UsernameInput from "@/components/dashboard/username"
 import { DashboardSection } from "@/components/dashboard-section"
-import { Field, FieldLabel } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { BACKGROUND_EFFECTS_COMPONENTS } from "@/lib/backgrounds"
 import {
   DEFAULT_PROFILE_CONFIG,
   DEFAULT_PROFILE_CONTENT,
@@ -22,12 +18,15 @@ import {
   updateProfileConfig,
   updateProfileContent,
 } from "@/lib/profile"
-import { capitalized } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
-import { type BackgroundEffect, ProfileConfig, ProfileContent } from "@/types/profile"
+import { ProfileConfig, ProfileContent } from "@/types/profile"
 import { EditIcon, SparklesIcon, TextIcon, TextSelectIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import BackgroundEffectSelector from "@/components/dashboard/background-effect"
+import CardBackgroundColor from "@/components/dashboard/card-background-color"
+import CardOpacity from "@/components/dashboard/card-opacity"
+import CardBorderRadius from "@/components/dashboard/card-border-radius"
+import BackgroundBlur from "@/components/dashboard/background-blur"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -123,7 +122,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         <TextIcon />
         Content
       </SectionHeading>
-      <DashboardSection className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2">
+      <DashboardSection className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-2">
         <UsernameInput username={username} onChange={setUsername} ref={usernameInput} />
         <NameInput
           name={content.name ?? ""}
@@ -173,7 +172,30 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         Card
       </SectionHeading>
       <DashboardSection>
-        <div />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <CardBackgroundColor
+            backgroundColor={config.card.backgroundColor}
+            onChange={(backgroundColor) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, backgroundColor } }))
+            }
+          />
+          <CardOpacity
+            opacity={config.card.opacity}
+            onChange={(opacity) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, opacity } }))
+            }
+          />
+          <CardBorderRadius
+            borderRadius={config.card.borderRadius || "medium"}
+            onChange={(borderRadius) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderRadius } }))
+            }
+          />
+          <BackgroundBlur
+            blur={config.card.blur ? config.card.blur : "none"}
+            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
+          />
+        </div>
       </DashboardSection>
     </div>
   )

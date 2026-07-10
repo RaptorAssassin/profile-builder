@@ -23,6 +23,7 @@ export default function ProfilePicture({ profilePictureSrc, onChange }: ProfileP
             src={profilePictureSrc}
             alt="Profile Picture"
             fill
+            sizes="128"
             className="object-cover object-center"
           />
         </div>
