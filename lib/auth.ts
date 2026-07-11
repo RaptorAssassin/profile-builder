@@ -36,3 +36,9 @@ export const signUp = async (email: string, password: string): Promise<void> => 
     console.error("Error occurred while signing up:", error)
   }
 }
+
+export const signOut = async () => {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signOut()
+}
