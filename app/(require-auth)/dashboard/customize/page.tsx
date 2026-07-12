@@ -27,6 +27,9 @@ import CardBackgroundColor from "@/components/dashboard/card-background-color"
 import CardOpacity from "@/components/dashboard/card-opacity"
 import CardBorderRadius from "@/components/dashboard/card-border-radius"
 import BackgroundBlur from "@/components/dashboard/background-blur"
+import { Skeleton } from "@/components/ui/skeleton"
+import BorderColor from "@/components/dashboard/border-color"
+import BorderWidth from "@/components/dashboard/border-width"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -111,9 +114,21 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     return () => clearTimeout(timeout)
   }, [config, content, isLoading, router])
 
+  if (isLoading) {
+    return (
+      <div className="flex h-full w-full flex-col gap-4 px-4 py-2">
+        <Skeleton className="h-8 w-1/3"></Skeleton>
+        <Skeleton className="h-8 w-1/4"></Skeleton>
+        <Skeleton className="h-80 w-full"></Skeleton>
+        <Skeleton className="h-8 w-1/4"></Skeleton>
+        <Skeleton className="h-80 w-full"></Skeleton>
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
-      <h1 className="flex items-center gap-2 text-4xl font-extrabold">
+      <h1 className="flex items-center gap-2 text-3xl font-extrabold md:text-4xl">
         <EditIcon size={32} strokeWidth={3} />
         Customize Profile
       </h1>
@@ -185,15 +200,27 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               setConfig((prev) => ({ ...prev, card: { ...prev.card, opacity } }))
             }
           />
+          <BackgroundBlur
+            blur={config.card.blur ? config.card.blur : "None"}
+            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
+          />
           <CardBorderRadius
-            borderRadius={config.card.borderRadius || "medium"}
+            borderRadius={config.card.borderRadius || "Medium"}
             onChange={(borderRadius) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, borderRadius } }))
             }
           />
-          <BackgroundBlur
-            blur={config.card.blur ? config.card.blur : "none"}
-            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
+          <BorderColor
+            borderColor={config.card.borderColor || "#000000"}
+            onChange={(borderColor) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderColor } }))
+            }
+          />
+          <BorderWidth
+            borderWidth={config.card.borderWidth || 0}
+            onChange={(borderWidth) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderWidth } }))
+            }
           />
         </div>
       </DashboardSection>

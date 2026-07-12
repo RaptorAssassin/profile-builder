@@ -20,11 +20,11 @@ export const DEFAULT_PROFILE_CONFIG: ProfileConfig = {
   card: {
     backgroundColor: "#000000",
     opacity: 100,
-    blur: "none",
+    blur: "None",
     textColor: "#ffffff",
     borderColor: "#2e2e2e",
     borderWidth: 1,
-    borderRadius: "medium",
+    borderRadius: "Medium",
   },
 }
 

@@ -73,8 +73,8 @@ export type BackgroundEffectProps = {
   }
 }
 
-export type BorderRadius = "none" | "small" | "medium" | "large"
-export type Blur = "none" | "small" | "medium" | "large"
+export type BorderRadius = "None" | "Small" | "Medium" | "Large"
+export type Blur = "None" | "Small" | "Medium" | "Large"
 
 export type ProfileConfig = {
   background: BackgroundConfig

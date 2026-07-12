@@ -16,17 +16,17 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
   const cardBackgroundColor = Color(cardConfig.backgroundColor).alpha(cardOpacity).rgb().string()
 
   const radiusClasses = {
-    none: "rounded-none",
-    small: "rounded-lg",
-    medium: "rounded-xl",
-    large: "rounded-4xl",
+    None: "rounded-none",
+    Small: "rounded-lg",
+    Medium: "rounded-xl",
+    Large: "rounded-4xl",
   } as const
 
   const blurClasses = {
-    none: "",
-    small: "backdrop-blur-lg",
-    medium: "backdrop-blur-xl",
-    large: "backdrop-blur-3xl",
+    None: "",
+    Small: "backdrop-blur-lg",
+    Medium: "backdrop-blur-xl",
+    Large: "backdrop-blur-3xl",
   } as const
 
   return (
@@ -39,8 +39,8 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
       }}
       className={cn(
         "absolute top-1/2 left-1/2 w-fit max-w-[90vw] min-w-[18rem] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border p-6 shadow-[0_0_12px_rgba(255,255,255,0.05)] sm:min-w-88 md:min-w-md lg:max-w-2/5",
-        radiusClasses[cardConfig.borderRadius || "medium"],
-        blurClasses[cardConfig.blur || "none"]
+        radiusClasses[cardConfig.borderRadius || "Medium"],
+        blurClasses[cardConfig.blur || "None"]
       )}
     >
       {/* Content */}
@@ -53,6 +53,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
               alt="Profile Picture"
               className="object-cover object-center"
               fill
+              sizes="160px"
               priority
             />
           </div>
