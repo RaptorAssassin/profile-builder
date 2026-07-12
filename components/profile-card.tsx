@@ -53,6 +53,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
               alt="Profile Picture"
               className="object-cover object-center"
               fill
+              sizes="160px"
               priority
             />
           </div>

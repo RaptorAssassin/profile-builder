@@ -27,6 +27,7 @@ import CardBackgroundColor from "@/components/dashboard/card-background-color"
 import CardOpacity from "@/components/dashboard/card-opacity"
 import CardBorderRadius from "@/components/dashboard/card-border-radius"
 import BackgroundBlur from "@/components/dashboard/background-blur"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -111,9 +112,21 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     return () => clearTimeout(timeout)
   }, [config, content, isLoading, router])
 
+  if (isLoading) {
+    return (
+      <div className="flex h-full w-full flex-col gap-4 px-4 py-2">
+        <Skeleton className="h-8 w-1/3"></Skeleton>
+        <Skeleton className="h-8 w-1/4"></Skeleton>
+        <Skeleton className="h-80 w-full"></Skeleton>
+        <Skeleton className="h-8 w-1/4"></Skeleton>
+        <Skeleton className="h-80 w-full"></Skeleton>
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-full w-full flex-col gap-4">
-      <h1 className="flex items-center gap-2 text-4xl font-extrabold">
+      <h1 className="flex items-center gap-2 text-3xl font-extrabold md:text-4xl">
         <EditIcon size={32} strokeWidth={3} />
         Customize Profile
       </h1>
