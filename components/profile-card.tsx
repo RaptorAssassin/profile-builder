@@ -63,7 +63,7 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
         <div className="text-4xl text-shadow-lg">{cardContent.name}</div>
 
         {/* Bio */}
-        <div className="text-center text-xl">{cardContent.bio}</div>
+        <div className="text-center text-xl whitespace-pre-wrap">{cardContent.bio}</div>
 
         {/* Location */}
         {cardContent.location && (

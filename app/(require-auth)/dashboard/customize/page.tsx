@@ -30,6 +30,7 @@ import BackgroundBlur from "@/components/dashboard/background-blur"
 import { Skeleton } from "@/components/ui/skeleton"
 import BorderColor from "@/components/dashboard/border-color"
 import BorderWidth from "@/components/dashboard/border-width"
+import TextColor from "@/components/dashboard/text-color"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -188,11 +189,17 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
       </SectionHeading>
       <DashboardSection>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <TextColor
+            textColor={config.card.textColor}
+            onChange={(textColor) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, textColor } }))
+            }
+          />
           <CardBackgroundColor
             backgroundColor={config.card.backgroundColor}
             onChange={(backgroundColor) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, backgroundColor } }))
-            }
+            } 
           />
           <CardOpacity
             opacity={config.card.opacity}
