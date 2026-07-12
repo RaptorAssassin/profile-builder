@@ -9,17 +9,17 @@ type CardBorderRadiusProps = {
 
 export default function CardBorderRadius({ borderRadius, onChange }: CardBorderRadiusProps) {
   const borderRadiusMap: Record<number, BorderRadius> = {
-    0: "none",
-    1: "small",
-    2: "medium",
-    3: "large",
+    0: "None",
+    1: "Small",
+    2: "Medium",
+    3: "Large",
   }
 
   const borderRadiusReverseMap: Record<BorderRadius, number> = {
-    none: 0,
-    small: 1,
-    medium: 2,
-    large: 3,
+    None: 0,
+    Small: 1,
+    Medium: 2,
+    Large: 3,
   }
 
   return (

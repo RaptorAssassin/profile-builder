@@ -28,6 +28,8 @@ import CardOpacity from "@/components/dashboard/card-opacity"
 import CardBorderRadius from "@/components/dashboard/card-border-radius"
 import BackgroundBlur from "@/components/dashboard/background-blur"
 import { Skeleton } from "@/components/ui/skeleton"
+import BorderColor from "@/components/dashboard/border-color"
+import BorderWidth from "@/components/dashboard/border-width"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -198,15 +200,27 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
               setConfig((prev) => ({ ...prev, card: { ...prev.card, opacity } }))
             }
           />
+          <BackgroundBlur
+            blur={config.card.blur ? config.card.blur : "None"}
+            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
+          />
           <CardBorderRadius
-            borderRadius={config.card.borderRadius || "medium"}
+            borderRadius={config.card.borderRadius || "Medium"}
             onChange={(borderRadius) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, borderRadius } }))
             }
           />
-          <BackgroundBlur
-            blur={config.card.blur ? config.card.blur : "none"}
-            onChange={(blur) => setConfig((prev) => ({ ...prev, card: { ...prev.card, blur } }))}
+          <BorderColor
+            borderColor={config.card.borderColor || "#000000"}
+            onChange={(borderColor) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderColor } }))
+            }
+          />
+          <BorderWidth
+            borderWidth={config.card.borderWidth || 0}
+            onChange={(borderWidth) =>
+              setConfig((prev) => ({ ...prev, card: { ...prev.card, borderWidth } }))
+            }
           />
         </div>
       </DashboardSection>

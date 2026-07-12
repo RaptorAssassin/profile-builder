@@ -9,17 +9,17 @@ type BackgroundBlurProps = {
 
 export default function BackgroundBlur({ blur, onChange }: BackgroundBlurProps) {
   const blurMap: Record<number, Blur> = {
-    0: "none",
-    1: "small",
-    2: "medium",
-    3: "large",
+    0: "None",
+    1: "Small",
+    2: "Medium",
+    3: "Large",
   }
 
   const blurReverseMap: Record<Blur, number> = {
-    none: 0,
-    small: 1,
-    medium: 2,
-    large: 3,
+    None: 0,
+    Small: 1,
+    Medium: 2,
+    Large: 3,
   }
 
   return (
