@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useRef, useState } from "react"
 import Bio from "@/components/dashboard/bio"
 import Location from "@/components/dashboard/location"
 import NameInput from "@/components/dashboard/name"
@@ -20,7 +20,7 @@ import {
 } from "@/lib/profile"
 import { createClient } from "@/lib/supabase/client"
 import { ProfileConfig, ProfileContent } from "@/types/profile"
-import { EditIcon, SparklesIcon, TextIcon, TextSelectIcon } from "lucide-react"
+import { EditIcon, LinkIcon, Section, SparklesIcon, TextIcon, TextSelectIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import BackgroundEffectSelector from "@/components/dashboard/background-effect"
 import CardBackgroundColor from "@/components/dashboard/card-background-color"
@@ -31,6 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import BorderColor from "@/components/dashboard/border-color"
 import BorderWidth from "@/components/dashboard/border-width"
 import TextColor from "@/components/dashboard/text-color"
+import Links from "@/components/dashboard/links"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -119,10 +120,12 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
     return (
       <div className="flex h-full w-full flex-col gap-4 px-4 py-2">
         <Skeleton className="h-8 w-1/3"></Skeleton>
-        <Skeleton className="h-8 w-1/4"></Skeleton>
-        <Skeleton className="h-80 w-full"></Skeleton>
-        <Skeleton className="h-8 w-1/4"></Skeleton>
-        <Skeleton className="h-80 w-full"></Skeleton>
+        {Array.from({ length: 2 }).map((_, index) => (
+          <Fragment key={index}>
+            <Skeleton className="h-8 w-1/4 rounded-(--radius)" />
+            <Skeleton className="h-80 w-full rounded-(--radius)"></Skeleton>
+          </Fragment>
+        ))}
       </div>
     )
   }
@@ -158,32 +161,6 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
       </DashboardSection>
 
       <SectionHeading>
-        <SparklesIcon />
-        Background
-      </SectionHeading>
-      <DashboardSection>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {/* <Background
-            background={config.background}
-            onChange={(background) => setConfig((prev) => ({ ...prev, background }))}
-          /> */}
-
-          <BackgroundEffectSelector
-            effect={config.effect?.type}
-            onChange={(effect) =>
-              setConfig((prev) => ({
-                ...prev,
-                effect: {
-                  type: effect,
-                  config: prev.effect?.config,
-                },
-              }))
-            }
-          />
-        </div>
-      </DashboardSection>
-
-      <SectionHeading>
         <TextSelectIcon />
         Card
       </SectionHeading>
@@ -199,7 +176,7 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
             backgroundColor={config.card.backgroundColor}
             onChange={(backgroundColor) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, backgroundColor } }))
-            } 
+            }
           />
           <CardOpacity
             opacity={config.card.opacity}
@@ -227,6 +204,40 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
             borderWidth={config.card.borderWidth || 0}
             onChange={(borderWidth) =>
               setConfig((prev) => ({ ...prev, card: { ...prev.card, borderWidth } }))
+            }
+          />
+        </div>
+      </DashboardSection>
+
+      <SectionHeading>
+        <LinkIcon />
+        Links
+      </SectionHeading>
+      <DashboardSection>
+        <Links links={content.links} />
+      </DashboardSection>
+
+      <SectionHeading>
+        <SparklesIcon />
+        Background
+      </SectionHeading>
+      <DashboardSection>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* <Background
+            background={config.background}
+            onChange={(background) => setConfig((prev) => ({ ...prev, background }))}
+          /> */}
+
+          <BackgroundEffectSelector
+            effect={config.effect?.type}
+            onChange={(effect) =>
+              setConfig((prev) => ({
+                ...prev,
+                effect: {
+                  type: effect,
+                  config: prev.effect?.config,
+                },
+              }))
             }
           />
         </div>

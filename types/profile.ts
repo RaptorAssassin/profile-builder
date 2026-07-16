@@ -75,6 +75,7 @@ export type BackgroundEffectProps = {
 
 export type BorderRadius = "None" | "Small" | "Medium" | "Large"
 export type Blur = "None" | "Small" | "Medium" | "Large"
+export type IconDesign = "color" | "monochrome" | "custom"
 
 export type ProfileConfig = {
   background: BackgroundConfig
@@ -90,16 +91,8 @@ export type ProfileConfig = {
     borderColor: string
     borderWidth?: number
     borderRadius?: BorderRadius
-    icons?: {
-      iconDesign?: "color" | "monochrome" | "custom"
-    }
+    iconDesign?: IconDesign
   }
-}
-
-export type ProfileLink = {
-  name: string
-  url: string
-  customIconUrl?: string
 }
 
 export type ProfileContent = {
@@ -109,3 +102,27 @@ export type ProfileContent = {
   profilePictureSrc?: string
   links?: ProfileLink[]
 }
+
+export type ProfileLink = {
+  name: string
+  url: string
+  icon: LinkIcon
+  customIconUrl?: string
+}
+
+export type LinkIcon =
+  | "email"
+  | "phone"
+  | "website"
+  | "discord"
+  | "x"
+  | "youtube"
+  | "instagram"
+  | "tiktok"
+  | "github"
+  | "gitlab"
+  | "leetcode"
+  | "linkedin"
+  | "reddit"
+  | "facebook"
+  | "twitch"
