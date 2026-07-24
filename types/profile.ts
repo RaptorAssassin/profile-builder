@@ -123,7 +123,7 @@ export type LinkIcon =
   | "github"
   | "gitlab"
   | "leetcode"
-  | "linkedin"
+  //  | "linkedin"
   | "reddit"
   | "facebook"
   | "twitch"

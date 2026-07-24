@@ -36,7 +36,7 @@ export const ICON_COMPONENTS: Record<LinkIcon, ComponentType<any>> = {
   gitlab: SiGitlab,
   leetcode: SiLeetcode,
 
-  linkedin: Linkedin,
+  //  linkedin: Linkedin,
   reddit: SiReddit,
   facebook: SiFacebook,
   twitch: SiTwitch,
