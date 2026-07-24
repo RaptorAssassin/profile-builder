@@ -214,7 +214,10 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
         Links
       </SectionHeading>
       <DashboardSection>
-        <Links links={content.links} />
+        <Links
+          links={content.links}
+          onChange={(links) => setContent((prev) => ({ ...prev, links }))}
+        />
       </DashboardSection>
 
       <SectionHeading>

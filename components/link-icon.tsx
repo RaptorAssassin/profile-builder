@@ -18,9 +18,9 @@ import { type LinkIcon } from "@/types/profile"
 
 export const ICON_COMPONENTS: Record<LinkIcon, ComponentType<any>> = {
   // Contact
+  website: GlobeIcon,
   email: MailIcon,
   phone: PhoneIcon,
-  website: GlobeIcon,
 
   // Social Media
   discord: SiDiscord,

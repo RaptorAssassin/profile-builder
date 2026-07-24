@@ -104,6 +104,7 @@ export type ProfileContent = {
 }
 
 export type ProfileLink = {
+  id: string
   name: string
   url: string
   icon: LinkIcon
