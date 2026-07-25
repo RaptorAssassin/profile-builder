@@ -23,7 +23,7 @@ export default function TextColor({ textColor, onChange }: TextColorProps) {
 
   return (
     <Field>
-      <FieldLabel>Text Color</FieldLabel>
+      <FieldLabel>Text & Icon Color</FieldLabel>
       <ColorPicker value={textColor} onChange={handleBackgroundColorChange} />
     </Field>
   )

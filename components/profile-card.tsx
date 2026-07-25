@@ -3,6 +3,8 @@ import { ProfileConfig, ProfileContent } from "@/types/profile"
 import { MapPinIcon } from "lucide-react"
 import Image from "next/image"
 import Color from "color"
+import { ICON_COMPONENTS } from "./link-icon"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
 
 type ProfileCardProps = {
   config: ProfileConfig
@@ -72,6 +74,44 @@ export default function ProfileCard({ config, content }: ProfileCardProps) {
             {cardContent.location}
           </div>
         )}
+
+        {/* Links */}
+        <div className="flex gap-2.5">
+          <TooltipProvider delayDuration={500} skipDelayDuration={0}>
+            {cardContent.links?.map((link, index) => {
+              const Icon = link.icon ? ICON_COMPONENTS[link.icon] : null
+              return (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-8 w-8 items-center justify-center transition-all delay-100 duration-400 hover:scale-115"
+                >
+                  {Icon &&
+                    (link.name?.trim() ? (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Icon className="h-full w-full" />
+                        </TooltipTrigger>
+
+                        <TooltipContent
+                          style={{
+                            backgroundColor: cardConfig.textColor,
+                            color: cardConfig.backgroundColor,
+                          }}
+                        >
+                          <p>{link.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <Icon className="h-full w-full" />
+                    ))}
+                </a>
+              )
+            })}
+          </TooltipProvider>
+        </div>
       </div>
     </div>
   )

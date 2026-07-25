@@ -105,7 +105,7 @@ export type ProfileContent = {
 
 export type ProfileLink = {
   id: string
-  name: string
+  name?: string
   url: string
   icon: LinkIcon
   customIconUrl?: string
@@ -117,9 +117,11 @@ export type LinkIcon =
   | "website"
   | "discord"
   | "x"
+  | "telegram"
   | "youtube"
   | "instagram"
   | "tiktok"
+  | "snapchat"
   | "github"
   | "gitlab"
   | "leetcode"
