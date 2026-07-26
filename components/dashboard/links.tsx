@@ -20,10 +20,6 @@ type LinksProps = {
 }
 
 export default function Links({ links, onChange }: LinksProps) {
-  if (!links) {
-    return null
-  }
-
   const icons = Object.keys(ICON_COMPONENTS) as LinkIcon[]
 
   return (
@@ -39,7 +35,7 @@ export default function Links({ links, onChange }: LinksProps) {
               url: "",
               icon: "website" as LinkIcon,
             } as ProfileLink,
-            ...links,
+            ...(links || []),
           ]
           onChange(newLinks)
         }}
@@ -47,104 +43,106 @@ export default function Links({ links, onChange }: LinksProps) {
         Add Link
         <PlusIcon />
       </Button>
-      <Reorder.Group
-        axis="y"
-        values={links}
-        onReorder={onChange}
-        className="flex flex-col flex-wrap gap-2"
-        layout
-      >
-        {links.map((link, index) => {
-          const Icon = ICON_COMPONENTS[link.icon]
-          return (
-            <Reorder.Item key={link.id} value={link} className="hover:cursor-grab">
-              <div className="align-center flex flex-wrap justify-start gap-2 rounded-md border border-border p-4 md:flex-nowrap">
-                <div className="mr-4 flex items-center justify-center">
-                  <GripVerticalIcon size={32} className="text-muted-foreground" />
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center">
-                    <div className="h-full w-full">
-                      {Icon && <Icon className="h-full w-full" />}
-                    </div>
+      {links && (
+        <Reorder.Group
+          axis="y"
+          values={links}
+          onReorder={onChange}
+          className="flex flex-col flex-wrap gap-2"
+          layout
+        >
+          {links.map((link, index) => {
+            const Icon = ICON_COMPONENTS[link.icon]
+            return (
+              <Reorder.Item key={link.id} value={link} className="hover:cursor-grab">
+                <div className="align-center flex flex-wrap justify-start gap-2 rounded-md border border-border p-4 md:flex-nowrap">
+                  <div className="mr-4 flex items-center justify-center">
+                    <GripVerticalIcon size={32} className="text-muted-foreground" />
                   </div>
-                  <Combobox
-                    value={link.icon}
-                    items={icons}
-                    onValueChange={(value) => {
-                      if (!value) return
+                  <div className="flex gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center">
+                      <div className="h-full w-full">
+                        {Icon && <Icon className="h-full w-full" />}
+                      </div>
+                    </div>
+                    <Combobox
+                      value={link.icon}
+                      items={icons}
+                      onValueChange={(value) => {
+                        if (!value) return
+                        const newLinks = [...links]
+                        newLinks[index] = {
+                          ...newLinks[index],
+                          icon: value as LinkIcon,
+                        }
+                        onChange(newLinks)
+                      }}
+                      itemToStringLabel={(icon) => (icon ? capitalized(icon) : "")}
+                    >
+                      <ComboboxInput placeholder="Icon" className="min-w-40" />
+                      <ComboboxContent>
+                        <ComboboxEmpty>No icon found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(item) => {
+                            const Icon = ICON_COMPONENTS[item as LinkIcon]
+                            return (
+                              <ComboboxItem key={item} value={item}>
+                                <Icon />
+                                {capitalized(item)}
+                              </ComboboxItem>
+                            )
+                          }}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </div>
+                  <Input
+                    placeholder="Name (Optional)"
+                    name="name"
+                    type="text"
+                    value={link.name}
+                    onChange={(e) => {
                       const newLinks = [...links]
                       newLinks[index] = {
                         ...newLinks[index],
-                        icon: value as LinkIcon,
+                        name: e.target.value,
                       }
                       onChange(newLinks)
                     }}
-                    itemToStringLabel={(icon) => (icon ? capitalized(icon) : "")}
+                    className="min-w-40"
+                  />
+                  <Input
+                    placeholder="Link"
+                    name="link"
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => {
+                      const newLinks = [...links]
+                      newLinks[index] = {
+                        ...newLinks[index],
+                        url: e.target.value,
+                      }
+                      onChange(newLinks)
+                    }}
+                    className="min-w-40"
+                  />
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                      const newLinks = [...links]
+                      newLinks.splice(index, 1)
+                      onChange(newLinks)
+                    }}
                   >
-                    <ComboboxInput placeholder="Icon" className="min-w-40" />
-                    <ComboboxContent>
-                      <ComboboxEmpty>No icon found.</ComboboxEmpty>
-                      <ComboboxList>
-                        {(item) => {
-                          const Icon = ICON_COMPONENTS[item as LinkIcon]
-                          return (
-                            <ComboboxItem key={item} value={item}>
-                              <Icon />
-                              {capitalized(item)}
-                            </ComboboxItem>
-                          )
-                        }}
-                      </ComboboxList>
-                    </ComboboxContent>
-                  </Combobox>
+                    <TrashIcon />
+                  </Button>
                 </div>
-                <Input
-                  placeholder="Name (Optional)"
-                  name="name"
-                  type="text"
-                  value={link.name}
-                  onChange={(e) => {
-                    const newLinks = [...links]
-                    newLinks[index] = {
-                      ...newLinks[index],
-                      name: e.target.value,
-                    }
-                    onChange(newLinks)
-                  }}
-                  className="min-w-40"
-                />
-                <Input
-                  placeholder="Link"
-                  name="link"
-                  type="text"
-                  value={link.url}
-                  onChange={(e) => {
-                    const newLinks = [...links]
-                    newLinks[index] = {
-                      ...newLinks[index],
-                      url: e.target.value,
-                    }
-                    onChange(newLinks)
-                  }}
-                  className="min-w-40"
-                />
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => {
-                    const newLinks = [...links]
-                    newLinks.splice(index, 1)
-                    onChange(newLinks)
-                  }}
-                >
-                  <TrashIcon />
-                </Button>
-              </div>
-            </Reorder.Item>
-          )
-        })}
-      </Reorder.Group>
+              </Reorder.Item>
+            )
+          })}
+        </Reorder.Group>
+      )}
     </div>
   )
 }
