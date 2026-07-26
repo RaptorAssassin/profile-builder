@@ -63,7 +63,7 @@ export const getProfileConfig = async (username: string): Promise<ProfileConfig>
 
   if (error) throw error
 
-  const config = data?.config ?? {}
+  const config: ProfileConfig = data?.config ?? {}
 
   return {
     ...DEFAULT_PROFILE_CONFIG,
@@ -84,11 +84,6 @@ export const getProfileConfig = async (username: string): Promise<ProfileConfig>
     card: {
       ...DEFAULT_PROFILE_CONFIG.card,
       ...(config.card ?? {}),
-
-      icons: {
-        ...DEFAULT_PROFILE_CONFIG.card.icons,
-        ...(config.card?.icons ?? {}),
-      },
     },
   }
 }
