@@ -32,6 +32,8 @@ import BorderColor from "@/components/dashboard/border-color"
 import BorderWidth from "@/components/dashboard/border-width"
 import TextColor from "@/components/dashboard/text-color"
 import Links from "@/components/dashboard/links"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function CustomizationPage({ params }: { params: { claimUsername?: string } }) {
   const [config, setConfig] = useState<ProfileConfig>(DEFAULT_PROFILE_CONFIG)
@@ -245,6 +247,20 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
           />
         </div>
       </DashboardSection>
+
+      {/* View Profile Button */}
+      <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center justify-center gap-2 rounded-(--radius) bg-background px-2 py-1 shadow-md">
+        <span className="hidden sm:block">Changes are saved automatically.</span>
+        <Button variant={"secondary"}>
+          <Link
+            href={window.location.origin + "/" + username}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Profile
+          </Link>
+        </Button>
+      </div>
     </div>
   )
 }
