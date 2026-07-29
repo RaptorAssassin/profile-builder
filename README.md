@@ -56,6 +56,11 @@ Link-in-bio profile builder built with _Next.js_ and _Supabase_.
 
 ## Getting Started
 
+### Prerequisites
+
+**Node.js**: Version `v18.18.0` or higher  
+**JavaScript Package Manager**: e.g. npm, pnpm, bun or yarn
+
 ### Clone the Repository
 
 ```bash
@@ -68,6 +73,20 @@ cd profile-builder
 ```bash
 npm install
 ```
+
+### Set Up Environment Variables
+
+Rename the `.env.example` file to `.env`. Fill it with your data from the [Supabase dashboard](https://supabase.com/dashboard)("connect" button in the header) and the [Hackclub CDN dashboard](https://cdn.hackclub.com/api_keys).
+
+<!-- ```properties title=".env"
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://<PROJECT_ID>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_<ID>
+
+# Hackclub CDN
+CDN_BASE_URL=https://cdn.hackclub.com/api/v4
+CDN_API_KEY=sk_cdn_<KEY>
+``` -->
 
 ### Start the App
 
