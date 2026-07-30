@@ -1,10 +1,12 @@
 # Profile Builder
 
-Link-in-bio profile builder built with _Next.js_ and _Supabase_.
+Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with _Next.js_, _Tailwind CSS_ and _Supabase_.
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/4228610c-045f-44c3-a153-31e5d907f822" width="100%" autoplay loop muted playsinline style="border-radius: 4px;">
-  </video>
+  <!-- <video src="https://github.com/user-attachments/assets/4228610c-045f-44c3-a153-31e5d907f822" width="100%" autoplay loop muted playsinline>
+  </video> -->
+<img width="1280" height="670" alt="Hero Image" src="https://github.com/user-attachments/assets/17a7e4de-843e-4169-a185-53bf132ae9d6">
+
 </p>
 
 <div align="center">
@@ -12,6 +14,8 @@ Link-in-bio profile builder built with _Next.js_ and _Supabase_.
         <img height="40" src="https://img.shields.io/badge/View%20Site-white?style=for-the-badge" alt"View Site">
     </a>
 </div>
+
+## Features
 
 ## Tech Stack
 
@@ -58,7 +62,7 @@ Link-in-bio profile builder built with _Next.js_ and _Supabase_.
 
 ### Prerequisites
 
-**Node.js**: Version `v18.18.0` or higher  
+**Node.js**: Version 20+  
 **JavaScript Package Manager**: e.g. npm, pnpm, bun or yarn
 
 ### Clone the Repository
@@ -76,9 +80,12 @@ npm install
 
 ### Set Up Environment Variables
 
-Rename the `.env.example` file to `.env`. Fill it with your data from the [Supabase dashboard](https://supabase.com/dashboard)("connect" button in the header) and the [Hackclub CDN dashboard](https://cdn.hackclub.com/api_keys).
+Rename the `.env.example` file to `.env` and fill it with your data from the [Supabase dashboard](https://supabase.com/dashboard)("connect" button in the header) and the [Hackclub CDN dashboard](https://cdn.hackclub.com/api_keys).
 
-<!-- ```properties title=".env"
+<details>
+<summary>.env file</summary>
+
+```properties title=".env"
 # Supabase
 NEXT_PUBLIC_SUPABASE_URL=https://<PROJECT_ID>.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_<ID>
@@ -86,10 +93,22 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_<ID>
 # Hackclub CDN
 CDN_BASE_URL=https://cdn.hackclub.com/api/v4
 CDN_API_KEY=sk_cdn_<KEY>
-``` -->
+```
+
+</details>
+
+### OAuth Setup
+
+Configure your redirect URLs in Supabase.
+
+Development: [http://localhost:3000/auth/callback](http://localhost:3000/auth/callback)
+
+Production: [https://your-domain.com/auth/callback](https://your-domain.com/auth/callback)
 
 ### Start the App
 
 ```bash
 npm run dev
 ```
+
+View the page at [localhost:3000](http://localhost:3000).
