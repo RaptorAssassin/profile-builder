@@ -212,17 +212,6 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
       </DashboardSection>
 
       <SectionHeading>
-        <LinkIcon />
-        Links
-      </SectionHeading>
-      <DashboardSection>
-        <Links
-          links={content.links}
-          onChange={(links) => setContent((prev) => ({ ...prev, links }))}
-        />
-      </DashboardSection>
-
-      <SectionHeading>
         <SparklesIcon />
         Background
       </SectionHeading>
@@ -246,6 +235,17 @@ export default function CustomizationPage({ params }: { params: { claimUsername?
             }
           />
         </div>
+      </DashboardSection>
+
+      <SectionHeading>
+        <LinkIcon />
+        Links
+      </SectionHeading>
+      <DashboardSection>
+        <Links
+          links={content.links}
+          onChange={(links) => setContent((prev) => ({ ...prev, links }))}
+        />
       </DashboardSection>
 
       {/* View Profile Button */}
