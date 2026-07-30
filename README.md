@@ -3,7 +3,7 @@
 Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with _Next.js_, _Tailwind CSS_ and _Supabase_.
 
 <div align="center">
-    <a href="https://profile-buildr.vercel.app">
+    <a href="https://profile-buildr.vercel.app" target="_blank">
         <img height="40" src="https://img.shields.io/badge/View%20Site-white?style=for-the-badge" alt"View Site">
     </a>
 </div>
@@ -21,10 +21,35 @@ Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with
 - 🖌️Fully customizable profile pages
 - 📷Upload a profile picture
 - 🎨Customize colors and design
-- 🌌Animated background effects
+- 🌌Animated and interactive background effects
 - 🔗Add and edit links to social media platforms
+- 📍Add a location badge to your profile
 - 📱Responsive design for both mobile and desktop
 - 💾Automatic saving of profile changes
+
+## Gallery
+
+### Login Page
+
+<img width="1920" height="945" alt="Login Page" src="https://github.com/user-attachments/assets/6ca2fbfa-918d-41d6-83b4-1983866e9d3b" />
+
+_The login page featuring options for OAuth using Github or Discord._
+
+### Dashboard
+
+<img width="1920" height="945" alt="Dashboard" src="https://github.com/user-attachments/assets/0cd2dca2-1e8c-4a53-8c51-5f07cfb5d815" />
+
+_The app dashboard where users can configure their profile contents and design._
+
+<img width="1386" height="369" alt="Links Section" src="https://github.com/user-attachments/assets/bad2cfae-7c38-467b-b3e6-8bf49281d77d" />
+
+_The links section where users can add, edit or reorder links to their social media profiles._
+
+### Public Profile
+
+<img width="1920" height="945" alt="Public Profile" src="https://github.com/user-attachments/assets/4c98871f-355e-495e-9291-c48f1f69b1f8" />
+
+_A public user profile with an interactive particle background and customly configured profile with social links._
 
 ## Tech Stack
 
@@ -120,4 +145,4 @@ Production: [https://your-domain.com/auth/callback](https://your-domain.com/auth
 npm run dev
 ```
 
-View the page at [localhost:3000](http://localhost:3000).
+View the page at [localhost:3000](http://localhost:3000) in your browser.
