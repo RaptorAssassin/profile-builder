@@ -2,6 +2,12 @@
 
 Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with _Next.js_, _Tailwind CSS_ and _Supabase_.
 
+<div align="center">
+    <a href="https://profile-buildr.vercel.app">
+        <img height="40" src="https://img.shields.io/badge/View%20Site-white?style=for-the-badge" alt"View Site">
+    </a>
+</div>
+
 <p align="center">
   <!-- <video src="https://github.com/user-attachments/assets/4228610c-045f-44c3-a153-31e5d907f822" width="100%" autoplay loop muted playsinline>
   </video> -->
@@ -9,13 +15,16 @@ Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with
 
 </p>
 
-<div align="center">
-    <a href="https://profile-buildr.vercel.app">
-        <img height="40" src="https://img.shields.io/badge/View%20Site-white?style=for-the-badge" alt"View Site">
-    </a>
-</div>
-
 ## Features
+
+- 🔒Secure Authentification with OAuth options
+- 🖌️Fully customizable profile pages
+- 📷Upload a profile picture
+- 🎨Customize colors and design
+- 🌌Animated background effects
+- 🔗Add and edit links to social media platforms
+- 📱Responsive design for both mobile and desktop
+- 💾Automatic saving of profile changes
 
 ## Tech Stack
 
