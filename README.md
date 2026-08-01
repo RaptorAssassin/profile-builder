@@ -59,8 +59,8 @@ _A public user profile with an interactive particle background and customly conf
 ![React](https://img.shields.io/badge/React-black?style=for-the-badge&logo=react&labelColor=black&color=%2361DAFB)
 ![Typescript](https://img.shields.io/badge/Typescript-black?style=for-the-badge&logo=typescript&labelColor=black&color=%233178C6)
 
-**Next.js 15 (App Router)**: Next.js Allows for fast loading times and efficient websites using techniques like server-side rendering.  
-**Typescript**: Written in Typescript to enforce type safety across complex profile configurations.
+**Next.js 15 (App Router)**: Handles SSR to keep profile loading times fast (<1s).  
+**Typescript**: Ensures type safety for profile configs.
 
 ### Frontend & Styling
 
@@ -68,29 +68,28 @@ _A public user profile with an interactive particle background and customly conf
 ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-black?style=for-the-badge&logo=shadcnui&logoColor=%23ffffff&labelColor=black&color=%23000000)
 ![Lucide](https://img.shields.io/badge/Lucide-black?style=for-the-badge&logo=lucide&logoColor=%23F56565&labelColor=black&color=%23F56565)
 
-**Tailwind CSS**: Tailwind's utility classes allow fast component styling.  
-**Shadcn UI**: Flexible and accessible components that create a clean look.  
-**Lucide React**: Clean and easy-to-use vector icon components.
+**Tailwind CSS**: Easy styling with utility classes.  
+**Shadcn UI**: Accessible react components.  
+**Lucide React**: Clean and open-source icon set.
 
 ### Backend & Database
 
 ![Supabase](https://img.shields.io/badge/Supabase-black?style=for-the-badge&logo=supabase&logoColor=%233FCF8E&labelColor=black&color=%233FCF8E)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-black?style=for-the-badge&logo=postgresql&logoColor=%234169E1&labelColor=black&color=%234169E1)
 
-**Supabase / PostgreSQL**: Relational database that stores user profiles with their content and configuration.
+**Supabase / PostgreSQL**: Relational database that stores all user profiles.
 
 ### Authentification
 
 ![Supabase Auth](https://img.shields.io/badge/Supabase%20Auth-black?style=for-the-badge&logo=supabase&logoColor=%233FCF8E&labelColor=black&color=%233FCF8E)
 
-**Supabase Auth**: Handles session tokens and middleware.  
-**OAuth Providers**: Social logins through external OAuth services, handled by Supabase Auth.
+**Supabase Auth**: Handles session tokens and OAuth.  
 
 ### Deployment
 
 ![Vercel](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=vercel&logoColor=%23ffffff&labelColor=black&color=%23000000)
 
-**Vercel**: Native cloud hosting platform with optimized performance for Next.js and a generous free plan.
+**Vercel**: Optimized performance for Next.js and a good free plan.
 
 ## Getting Started
 
