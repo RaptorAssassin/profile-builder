@@ -17,15 +17,15 @@ Link-in-bio profile builder inspired by [guns.lol](https://guns.lol). Built with
 
 ## Features
 
-- 🔒Secure Authentification with OAuth options
-- 🖌️Fully customizable profile pages
-- 📷Upload a profile picture
-- 🎨Customize colors and design
-- 🌌Animated and interactive background effects
-- 🔗Add and edit links to social media platforms
-- 📍Add a location badge to your profile
-- 📱Responsive design for both mobile and desktop
-- 💾Automatic saving of profile changes
+- Secure Authentification options using email or OAuth via Github or Discord
+- Fully customizable Profiles:
+    - Add a name, bio and location
+    - Upload a profile picture
+    - Customize design like card colors, shape and border design
+    - Choose between several animated and interactive backgrounds
+    - Social media links: choose an icon, a tooltip and add links
+- Automatic saving of profile content and configuration into the supabase database
+- Dashboard, login and profile are fully mobile-responsive
 
 ## Gallery
 
