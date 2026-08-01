@@ -141,8 +141,12 @@ Production: [https://your-domain.com/auth/callback](https://your-domain.com/auth
 
 ### Start the App
 
+Development:
 ```bash
 npm run dev
 ```
-
+Production:
+```bash
+npm run build
+```
 View the page at [localhost:3000](http://localhost:3000) in your browser.
